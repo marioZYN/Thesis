@@ -1,0 +1,284 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\options openright
+\use_default_options false
+\master thesis.lyx
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding T1
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 1
+\use_package mhchem 0
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Indice
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style swiss
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 2
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+L’introduzione deve essere atomica, quindi non deve contenere né sottosezioni
+ né paragrafi né altro.
+ Il titolo, il sommario e l’introduzione devono sembrare e e delle scatole
+ cinesi, nel senso che lette in quest’ordine devono progressivamente svelare
+ informazioni sul contenuto per incatenare l’attenzione del lettore e indurlo
+ a leggere l’opera fino in fondo.
+ L’introduzione deve essere tripartita, non graficamente ma logicamente.
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+Inquadramento generale
+\end_layout
+
+\begin_layout Plain Layout
+La prima parte contiene una frase che spiega l’area generale dove si svolge
+ il lavoro; una che spiega la sottoarea più specifica dove si svolge il
+ lavoro e la terza, che dovrebbe cominciare con le seguenti parole 
+\begin_inset Quotes cld
+\end_inset
+
+lo scopo della tesi è \SpecialChar ldots
+
+\begin_inset Quotes crd
+\end_inset
+
+, illustra l’obbiettivo del lavoro.
+ Poi vi devono essere una o due e frasi che contengano una breve spiegazione
+ di cosa e come è stato fatto, e delle attività sperimentali, dei risultati
+ ottenuti con una valutazione e degli a sviluppi futuri.
+ La prima parte deve essere circa una facciata e mezza o due.
+\end_layout
+
+\end_inset
+
+
+\emph default
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+Breve descrizione del lavoro
+\end_layout
+
+\begin_layout Plain Layout
+La seconda parte deve essere una esplosione della prima e deve quindi mostrare
+ in maniera pi` esplicita l’area dove si svolge il lavoro, le fonti u bibliograf
+iche pi` importanti su cui si fonda il lavoro in maniera sintetica u (una
+ pagina) evidenziando i lavori in letteratura che presentano attinenza con
+ il lavoro affrontato in modo da mostrare da dove e perché è sorta la tematica
+ di studio.
+ Poi si mostrano esplicitamente le realizzazioni, le direttive future di
+ ricerca, quali sono i problemi aperti e quali quelli affrontati e si ripete
+ lo scopo della tesi.
+ Questa parte deve essere piena di citazioni bibliografiche e deve essere
+ lunga circa 4 facciate.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+Struttura della tesi
+\end_layout
+
+\begin_layout Plain Layout
+La terza parte contiene la descrizione della struttura della tesi ed è organizza
+ta nel modo seguente.
+ 
+\begin_inset Quotes cld
+\end_inset
+
+La tesi è strutturata nel modo seguente
+\begin_inset Quotes crd
+\end_inset
+
+.
+ Nella sezione due si mostra\SpecialChar ldots
+, nella sezione tre si illustra\SpecialChar ldots
+ .
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Steller sea lions in the western Aleutian Islands have declined 94 percent
+ in the last 30 years.
+ The endangered western population, found in the North Pacific, are focus
+ of conservation efforts which require annual population counts.
+ Specifically trained scientists at NOAA Fisheriers Alaska Fisheries Science
+ Center conduct these surveys using airplanes and unoccupied aircraft systems
+ to collect aerial images.
+ Having accurate population estimates enables scientists to better understand
+ factors that may be contributing to lack of recovery of Stellers in this
+ area.
+ Currently, it takes biologists up to four months to count sea lions from
+ the thousand of images NOAA Fisheries collects each year.
+ Once individual counts are conducted, the tallies must be reconciled to
+ confirm their reliability.
+ The results of these counts are time-sensitive.
+ Automating the annual population count will free up critical resources,
+ and allow experts to focus on the core research issue.
+ Plus, advancements in computer vision applied to aerial population counts
+ may also greatly benefit other endangered species.
+ 
+\end_layout
+
+\begin_layout Standard
+Since Alex reintroduced CNN architecture into computer vision field, deep
+ learning methods achieve the state-of-art for image classification, localizatio
+n, segmentation, etc...
+ Image classification is the task of giving an input image, output a correspondi
+ng label.
+ The algorithm is usually trained with massive labeled dataset and the outputs
+ are constrained to the labels we have in the training samples.
+ Image localization and segmentation are more difficult than classification.
+ Localization algorithm outputs a bounding box and a corresponding label
+ around each object in the image.
+ In order to do this, the training data needs to have both the labels and
+ the bounding boxes indicating the object location.
+ This kind of dataset requires large amount of time for human labelers and
+ thus is more difficult to construct.
+ Segmentation algorithm requires pixel-leveled prediction for each object
+ and constructing this kind of training set is tedious.
+ 
+\end_layout
+
+\begin_layout Standard
+The purpose for this thesis is to develop an algorithm for simultaneous
+ classification and counting, thus we don't need to produce exact location
+ for each object.
+ Given an input image, we output the label and the corresponding count for
+ each object.
+ There are various kinds of situations where we could apply this algorithm
+ to, for example, the counting problem for endangered animals like the sea
+ lions described above.
+ Also for medical pictures, we could use this algorithm to produce precise
+ counts for cells and tissues, helping doctors to analyze the disease.
+ Moreover, the training dataset is a lot easier to construct: we only need
+ to have a labeled dot for each object, no bounding boxes are required.
+ 
+\end_layout
+
+\begin_layout Standard
+In the thesis, we use the sea lions dataset provided by NOAA Kaggle Competition
+ and build a fully convolutional network based on Count-Ception Architecture
+ introduced in [1].
+ The thesis is structured as follows:
+\end_layout
+
+\begin_layout Itemize
+In Chapter 1, An overview for image classification, localization and segmentatio
+n is provided and explains how they may be used in our counting problem.
+ 
+\end_layout
+
+\begin_layout Itemize
+In Chapter 2, Count-Ception Architecture is introduced.
+\end_layout
+
+\begin_layout Itemize
+In Chapter 3, Our algorithm is discussed.
+\end_layout
+
+\begin_layout Itemize
+In Chapter 4, We deal with dataset construction and preprocessing techniques.
+\end_layout
+
+\begin_layout Itemize
+In Chapter 5, Conclusions are provided.
+\end_layout
+
+\begin_layout Itemize
+In Chapter 6, Issues and further improvements are discussed.
+\end_layout
+
+\end_body
+\end_document
