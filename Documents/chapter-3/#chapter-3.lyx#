@@ -75,9 +75,15 @@
 \html_math_output 0
 \html_css_as_file 0
 \html_be_strict false
+\author -898145728 "Michele,,,"
 \end_header
 
 \begin_body
+
+\begin_layout Standard
+These are very personal suggestions, no offense will be taken if you completely
+ ignore this chapter.
+\end_layout
 
 \begin_layout Section
 Inception Network
@@ -106,10 +112,6 @@ Inception module
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
 The main difference between Inception module and normal CNN convolution
  layer is that Inception uses various sizes of filters in each layer while
  CNN uses only one.
@@ -122,14 +124,14 @@ The main difference between Inception module and normal CNN convolution
  As we can see in the figure, there are three shapes of filter: 1x1, 3x3
  and 5x5.
  The 1x1 filter is also used for dimension reduction.
- In figure a, we can see the naive implementation of this idea.
+ In the left figure, we can see the naive implementation of this idea.
  This implementation, however, has one big issue, even a modest number of
  5x5 convolutions can be prohibitively expensive on top of a convolutional
  layer with a large number of filters.
  This problem becomes even more pronounced when we stack all the outputs
  together.
- This leads to the second implementation structure, as we can see in figure
- b.
+ This leads to the second implementation structure, as we can see in the
+ right figure.
  Whenever the computational requirements increase too much, we can simply
  apply a 1x1 convolution to reduce the dimension.
  Another thing to mention is the max pooling layer, it exists for no particular
@@ -263,15 +265,213 @@ Inception v3 introduces rmsprop, factorized 7x7 filters and batch normalization
 \end_layout
 
 \begin_layout Itemize
-Inception v4 uses the idea of ResNet
+
 \end_layout
 
 \begin_layout Section
-Count-Ception Architecture
+Reviews
+\end_layout
+
+\begin_layout Standard
+Your advisor will review what are you writing and he will, most likely,
+ add annotations on a 
+\family sans
+pdf
+\family default
+.
+ However, correction contained inside annotations are difficult to integrate,
+ manly because you will spend a lot of time in finding where to modify your
+ document.
+ \SpecialChar LyX
+ supports a very powerful method to review a document, just look the examples
+ below.
+\end_layout
+
+\begin_layout Standard
+Where 
+\change_deleted -898145728 1390600943
+you has learn
+\change_inserted -898145728 1390600950
+have you learned
+\change_unchanged
+ english stupid dumbass?
+\end_layout
+
+\begin_layout Standard
+The derivative of 
+\begin_inset Formula $e^{x}$
+\end_inset
+
+ is 
+\begin_inset Formula $e^{2x}$
+\end_inset
+
+
+\change_inserted -898145728 1390600903
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted -898145728 1390600927
+Are you really sure of that?
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+.
 \end_layout
 
 \begin_layout Standard
 
+\change_deleted -898145728 1390600833
+In my opinion
+\change_inserted -898145728 1390660018
+After having considered all the other solutions we proved that
+\change_unchanged
+ this is the most efficient way to determine the medium length of horse's
+ mane.
+\end_layout
+
+\begin_layout Standard
+These result shows that the first method is way better than the second.
+ 
+\change_inserted -898145728 1390600778
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted -898145728 1390600828
+explain why the first method is better
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
+\begin_inset Newline newline
+\end_inset
+
+The integration of these reviews is much easier than reviews inside annotation
+ of a 
+\family sans
+pdf
+\family default
+.
+ Unfortunately you have to convince your advisor to use this system, I think
+ it is worth a try.
+\end_layout
+
+\begin_layout Standard
+This feature is called 
+\family sans
+Change Tracking
+\family default
+, there is a dedicated toolbar that you can show by activating the 
+\family sans
+Change Track
+\family default
+ option (
+\family sans
+Document \SpecialChar menuseparator
+ Change Tracking \SpecialChar menuseparator
+ Track Changes
+\family default
+ or simply 
+\family sans
+CTRL + SHIFT + E
+\family default
+).
+ This document has the 
+\family sans
+Change Tracking
+\family default
+ option already enabled.
+\end_layout
+
+\begin_layout Section
+Final presentation
+\end_layout
+
+\begin_layout Standard
+Once you have written your thesis you will have to present it.
+ Timing is critical.
+ You will have from 
+\begin_inset Formula $15$
+\end_inset
+
+ to 
+\begin_inset Formula $20$
+\end_inset
+
+ minutes to present the work of months.
+ A very useful tool that you may use during your presentation is 
+\family typewriter
+pdfpc
+\family default
+ (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://davvil.github.io/pdfpc/
+\end_layout
+
+\end_inset
+
+).
+ By using this program, on the screen of your laptop you will have some
+ additional information that are not showed on the external monitor.
+ These extra information are
+\end_layout
+
+\begin_layout Description
+Time
+\begin_inset space ~
+\end_inset
+
+left you can set the duration of the presentation and see how many minutes
+ and seconds you have left
+\end_layout
+
+\begin_layout Description
+Next
+\begin_inset space ~
+\end_inset
+
+slide you will see both the current and the next slide
+\end_layout
+
+\begin_layout Description
+Annotations you can add some annotation to remember you some key points
+ that you may forget
+\end_layout
+
+\begin_layout Standard
+This tool is very very useful, but do not forget that there is always the
+ demo effect.
+ You MUST try it before even thinking to use for your final presentation.
+\end_layout
+
+\begin_layout Standard
+To install the program on a Linux system there should be a package named
+ 
+\family sans
+pdf-presenter-console
+\family default
+, for other OS on the websites of the program there are the instruction
+ how to install it.
 \end_layout
 
 \end_body

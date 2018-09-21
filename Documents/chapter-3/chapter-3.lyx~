@@ -106,10 +106,6 @@ Inception module
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
 The main difference between Inception module and normal CNN convolution
  layer is that Inception uses various sizes of filters in each layer while
  CNN uses only one.
@@ -122,14 +118,14 @@ The main difference between Inception module and normal CNN convolution
  As we can see in the figure, there are three shapes of filter: 1x1, 3x3
  and 5x5.
  The 1x1 filter is also used for dimension reduction.
- In figure a, we can see the naive implementation of this idea.
+ In the left figure, we can see the naive implementation of this idea.
  This implementation, however, has one big issue, even a modest number of
  5x5 convolutions can be prohibitively expensive on top of a convolutional
  layer with a large number of filters.
  This problem becomes even more pronounced when we stack all the outputs
  together.
- This leads to the second implementation structure, as we can see in figure
- b.
+ This leads to the second implementation structure, as we can see in the
+ right figure.
  Whenever the computational requirements increase too much, we can simply
  apply a 1x1 convolution to reduce the dimension.
  Another thing to mention is the max pooling layer, it exists for no particular
