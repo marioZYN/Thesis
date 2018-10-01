@@ -1,7 +1,9 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass book
 \options openright
 \use_default_options false
@@ -11,16 +13,18 @@
 \language_package default
 \inputencoding auto
 \fontencoding T1
-\font_roman default
-\font_sans default
-\font_typewriter default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
-
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -31,16 +35,26 @@
 \use_hyperref false
 \papersize a4paper
 \use_geometry false
-\use_amsmath 2
-\use_esint 1
-\use_mhchem 0
-\use_mathdots 0
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 1
+\use_package mhchem 0
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
+\use_minted 0
 \index Indice
 \shortcut idx
 \color #008000
@@ -49,7 +63,10 @@
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language french
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style swiss
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 2
 \paperpagestyle fancy
@@ -62,419 +79,169 @@
 
 \begin_body
 
-\begin_layout Standard
-These are style suggestions that you can use to personalize and beautify
- your thesis.
-\end_layout
-
 \begin_layout Section
-Font
+Steller Sea Lion Dataset
 \end_layout
 
 \begin_layout Standard
-One important stylistic change that you can do is changing the font.
- The default one is Computer Modern which is ok, but there are other fonts
- that can be used.
- You can change the font in the properties of the document (
-\family sans
-Document
-\family default
- 
-\family sans
-\SpecialChar \menuseparator
+The goal of Steller Sea Lion Count competition is to estimate each type
+ of sea lion in each one of test images.
+ The different types of sea lion are: adult males, subadult males, adult
+ females, and pups.
+ There are totally 947 training images and 18639 testing images.
+ For each training image, we have two versions: the original one and the
+ one with colored dots in the center of each sea lion.
+ Different images may have different sizes but all the sizes are around
+ 4500x3000x3, thus the image is quite large occupying around 5MB space.
+ The high resolution images bring us two major problems.
+ First, during training we need to deal with memory consumption and we can
+ not have a large number of batch size, otherwise they won't fit into GPU
+ memory.
+ Second, in the testing phase, we need to have short inference time due
+ to huge amount testing images.
+ In figure 4.1, a sampled training image pair is provided.
+ Different color indicates different sea lion types:
+\end_layout
 
-\family default
- 
-\family sans
-Settings
-\family default
- 
-\family sans
-\SpecialChar \menuseparator
+\begin_layout Itemize
+red: adult males
+\end_layout
 
-\family default
- 
-\family sans
-Fonts
-\family default
-).
- Not all the fonts can be used when compiling with 
-\family sans
-pdflatex
-\family default
-, with some fonts you need to render the 
-\family sans
-pdf
-\family default
- with XeLaTeX or LuaLaTeX.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:font-styles"
+\begin_layout Itemize
+magenta: subadult males
+\end_layout
 
-\end_inset
+\begin_layout Itemize
+brown: adult females
+\end_layout
 
- shows two different examples of fonts combination.
+\begin_layout Itemize
+blue: juveniles
+\end_layout
+
+\begin_layout Itemize
+green: pups
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/latin-modern-font.pdf
-
-\end_inset
-
-
-\begin_inset space \hfill{}
-\end_inset
-
-
-\begin_inset Graphics
-	filename images/funny-combination-font.pdf
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:font-styles"
-
-\end_inset
-
-Two different font styles
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The fonts used in the example are summarized in the Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:font-names"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset Float table
-placement h
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:font-names"
-
-\end_inset
-
-Fonts used in the two examples showed before
-\end_layout
-
-\end_inset
-
-
-\begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="3">
-<features booktabs="true" tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\series bold
-Serif
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Latin Modern Roman Unslanted
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Gentium
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\series bold
-Sans Serif
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Latin Modern Sans Demi Condensed
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Verdana
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\series bold
-Typewriter
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Latin Modern Mono Slanted
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Inconsolata
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If, by looking at the 
-\family sans
-pdf
-\family default
-, the letters look ugly check the property of the 
-\family sans
-pdf
-\family default
-, in particular the type of fonts used (how to find this information depends
- on the 
-\family sans
-pdf
-\family default
- viewer that you are using, if you are using Linux use 
-\family sans
-pdffonts
-\family default
- command).
- If your 
-\family sans
-pdf
-\family default
- has 
-\family sans
-Type 3
-\family default
- fonts that is the reason why your 
-\family sans
-pd
-\family default
-f looks ugly.
- It is better to use 
-\family sans
-Type 1
-\family default
- fonts, if you are running LyX on a Linux system by installing 
-\family sans
-cm-super
-\family default
- package you can fix this problem.
-\end_layout
-
-\begin_layout Section
-Fancy chapter header
-\end_layout
-
-\begin_layout Standard
-The header of each chapter can be personalized as you like, this requires
- you to write a rather big amount of LaTeX code to get a nice result.
- However, there is package that provides a set of predefined styles, 
-\family sans
-fncychap
-\family default
- (
-\begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
 
-http://www.ctan.org/pkg/fncychap
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/0.jpg
+	lyxscale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Original image
 \end_layout
 
 \end_inset
 
-).
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:fancy-headers"
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/0_dot.jpg
+	lyxscale 10
 
 \end_inset
 
- shows just two of the styles offered by the package.
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Labeled image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Training image pair
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-\align center
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename images/fancy-page-header-1.pdf
-	width 60col%
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Lenny style
+As we can see in the figure, there are some black regions in the labeled
+ images.
+ The black regions are added by the data provider in order to filter out
+ controversial sea lions.
+ Another thing to notice is the number of sea lions in each image.
+ In the image pair example above, we have around 900 sea lions but the number
+ of sea lions varies a lot in different images.
+ More specifically, we can have only one or two sea lions in some images.
+ Also it is not an uniform distribution for sea lion types.
+ Here is a summary of sea lion type distribution in the training dataset:
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename images/fancy-page-header-2.pdf
-	width 60col%
-
-\end_inset
-
-
-\end_layout
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Conny style
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:fancy-headers"
-
-\end_inset
-
-Two possible styles for headers of chapters
+Sea lion types distribution
 \end_layout
 
 \end_inset
@@ -488,45 +255,64 @@ Two possible styles for headers of chapters
 \end_layout
 
 \begin_layout Section
-Fancy initial letters
+Data Preprocessing
 \end_layout
 
 \begin_layout Standard
-Another thing that can be fancied are the initial letters.
- This is a very simple modification that you can do to add a personal touch
- to each chapter.
- There is a package that permits to customize, with various options, initial
- letters called 
-\family sans
-lettrine
-\family default
- (
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.ctan.org/pkg/lettrine
+In order to construct the training dataset, we need to do some data preprocessin
+g.
+ First of all, we use blob detection to find the color of each dot and its
+ coordinates.
+ Then we can use these coordinates to construct target maps which are used
+ in our Count-ception architecture.
+ Data augmentation is used to balance sea lion types and improve classification
+ performance.
+ 
 \end_layout
 
-\end_inset
-
-).
- There are a lot of options to create your personal style for each initial,
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:initial-letters"
-
-\end_inset
-
- shows two possible styles of initials.
+\begin_layout Subsection
+Blob Detection
 \end_layout
 
 \begin_layout Standard
-\align center
+In computer vision, blob detection methods are aimed at detecting regions
+ in a digital image that differ in properties, such as brightness or color,
+ compared to surrounding regions.
+ Informally, a blob is a region of an image in which some properties are
+ constant or approximately constant; all the points in a blob can be considered
+ in some sense to be similar to each other.
+ The most common method for blob detection is convolution.
+ 
+\end_layout
+
+\begin_layout Standard
+A dot in labeled images is a blob which contains the same pixel values,
+ thus we can use blob detection to find the center coordinates of the dot.
+ After we get the center coordinates, we can use R, G, B values to decide
+ the color and get the corresponding sea lion type.
+ Luckily we don't need to implement blob detection algorithm from scratch,
+ there are many open source implementations for this algorithm and in this
+ thesis we use the version provided by opencv.
+ 
+\end_layout
+
+\begin_layout Subsection
+Target Map Construction
+\end_layout
+
+\begin_layout Standard
+In order to make Count-ception architecture work, we need to construct the
+ target map manually.
+ After we get the coordinate for each sea lion, we can construct a virtual
+ image indicating positions of each sea lion.
+ The virtual image has the same dimension as the original image and has
+ 255 pixel value at each sea lion coordinate, all the other pixel values
+ are zero.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
 status open
@@ -534,7 +320,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename images/lettrine.pdf
+	filename images/0_cell2.png
+	lyxscale 10
 
 \end_inset
 
@@ -542,16 +329,11 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\align center
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:initial-letters"
-
-\end_inset
-
-Two examples of initial letters
+Original Image
 \end_layout
 
 \end_inset
@@ -562,129 +344,203 @@ Two examples of initial letters
 \end_inset
 
 
-\end_layout
-
-\begin_layout Section
-Fancy headers
 \end_layout
 
 \begin_layout Standard
-Fancy headers are already used in this template, the package used is 
-\family sans
-fancyhdr
-\family default
- (
-\family sans
-
-\begin_inset Flex URL
-status collapsed
+\begin_inset Float figure
+wide false
+sideways false
+status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/0_dot2.png
+	lyxscale 10
 
-http://www.ctan.org/pkg/fancyhdr
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Virtual Image
 \end_layout
 
 \end_inset
 
 
-\family default
-).
- There are a lot of options, this template uses almost the standard style
- for the header but you can change it.
- For example, you may move the page numbering from the bottom header to
- the top header, or remove the horizontal line in the header, or \SpecialChar \ldots{}
- .
- In this template the fancy header style is set in the LaTeX preamble of
- the 
-\family sans
-thesis.lyx
-\family default
- document (
-\family sans
-Document
-\family default
- 
-\family sans
-\SpecialChar \menuseparator
-
-\family default
- 
-\family sans
-Settings
-\family default
- 
-\family sans
-\SpecialChar \menuseparator
-
-\family default
- 
-\family sans
-LaTeX Preamble
-\family default
-) and just before the 
-\family sans
-Introduction
-\family default
- chapter.
 \end_layout
 
-\begin_layout Section
-Other document classes
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-This template uses the 
-\family sans
-book
-\family default
- class, there are some more advanced classes that have a lot of cool features
- such as the one offered by 
-\family sans
-koma-script
-\family default
- or 
-\family sans
-memoir
-\family default
- (
-\family sans
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.ctan.org/pkg/koma-script
-\end_layout
-
-\end_inset
-
-
-\family default
-, 
-\family sans
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.ctan.org/pkg/memoir
-\end_layout
-
-\end_inset
-
-
-\family default
-).
+As mentioned before, target map network is a simple CNN architecture with
+ one convolution layer.
+ The target construction network is used on the virtual image in order to
+ get the target map which is a heat map indicating positive object area.
+ The convolution operation is implemented by pad zero and stride one and
+ the filter is filled with ones.
+ When we convolve the filter with the virtual image, we will get a positive
+ value if the object dot is inside the filter, otherwise we will get a zero.
+ Let us see an example, we have a virtual image of size 120x120 and there
+ is an object dot at center of the image.
+ After convolution, the virtual image turns into target map.
+ 
 \end_layout
 
 \begin_layout Standard
-LyX supports a discrete number of those alternative classes, however to
- fully exploit the additional functionalities offered by those classes you
- have to write raw LaTeX code.
- If you want to deeply customize your thesis maybe it is better if you start
- considering to write it directly in LaTeX rather than using LyX.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/virtual_image.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Virtual image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/activation_map.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Target map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Recall that in the labeled images, we have a colored dot at the center of
+ each sea lion and when we design the target map network, we need to pay
+ attention to the filter size.
+ We call the filter is activated when we get a positive output.
+ In the example above, the filter size is 48x48 and it is activated when
+ the red dot hits the right bottom corner of the filter.
+ It is easy to see that the activation area in the virtual image is twice
+ the size of the filter minus one, as illustrated in figure 4.7.
+ When we try to design the filter size, we need to keep in mind that the
+ object should lie inside the activation area.
+ Note that the original image and virtual image has the same size.
+ In Steller sea lion dataset, the largest type of sea lion is the adult
+ male which is around 96x96 pixels, so we can make the filter size equals
+ to 48.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/filter.png
+	lyxscale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Activation area
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Augmentation 
+\end_layout
+
+\begin_layout Standard
+Data augmentation is a common technique used to improve the performance
+ of neural networks.
+ Overfitting is a challenge for deep learning models due to the lack of
+ data and complex structures.
+ We can not simplify the deep learning architecture when we have a non trivial
+ problem but we can increase the training data by data augmentation.
+ Given an input image, we can rotate, flip and zoom it to enrich our dataset.
+ In Steller sea lion dataset, we use data augmentation to balance the sea
+ lion types and improve classification performance.
+ 
 \end_layout
 
 \end_body

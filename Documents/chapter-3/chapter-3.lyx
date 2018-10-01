@@ -133,6 +133,11 @@ The main difference between Inception module and normal CNN convolution
  Back in time, good performance CNN architectures have pooling structures
  and the inventor of Inception module decided to add the max pooling layer
  into the structure.
+ Nowadays people start to argue about pooling layers, on one hand, pooling
+ layers reduce the dimension of tensors to make deep network possible, but
+ on the other hand, pooling layers miss pixel information which can hurt
+ the performance.
+ In Count-ception architecture the author does not use pooling layers.
  
 \end_layout
 
@@ -237,27 +242,27 @@ Inception module is the fundamental element in inception architectures.
  the years.
  However in this thesis, we only use the idea of stacking various sizes
  of filters and ignore other tricks.
- So the details of the improvements are not discussed here, only a summary
- is provided.
+ So the details of the improvements of Inception networks are not discussed
+ here, only a summary is provided.
  
 \end_layout
 
 \begin_layout Itemize
 Inception v1 concatenates Inception modules to make the network wider and
- deeper
+ deeper.
 \end_layout
 
 \begin_layout Itemize
 Inception v2 uses two 3x3 filters to replace 5x5 filters, decomposes nxn
- filers into 1xn and nx1 filters in order to increase computation speed
+ filers into 1xn and nx1 filters in order to increase computation speed.
 \end_layout
 
 \begin_layout Itemize
-Inception v3 introduces RMSprop, factorized 7x7 filters and batch normalization
+Inception v3 introduces RMSprop, factorized 7x7 filters and batch normalization.
 \end_layout
 
 \begin_layout Itemize
-Inception v4 uses the idea of ResNet
+Inception v4 uses the idea of ResNet.
 \end_layout
 
 \begin_layout Section
@@ -280,27 +285,27 @@ F-CNN is short for fully convolutional neural net which is a convolutional
 \begin_layout Standard
 In fact, passing tensors through fully connected layers can be seen as a
  convolution operation.
- We can convert any fully connected layers into convolution filters, with
+ We can convert any fully connected layers into convolution layers, with
  one-to-one map on the weights.
- Let's see an example, suppose we are doing three class classification with
- one hidden layer of size 128 in fully connected layers and after convolution
- and pooling operations we get a tensor with size 2x2x256.
+ Let's see an example, suppose we have a CNN network doing three class classific
+ation with one hidden layer of size 128 neurons.
+ After convolution and pooling operations we get a tensor with size 2x2x256.
  If we want to pass it through fully connected layers, we need to first
  stretch it into a long vector of size 1024.
- If we ignore the bias, the weights in fully connected layers are 1024x128
- and 128x3.
+ If we ignore the bias, the weight matrices in fully connected layers are
+ 1024x128 and 128x3.
  We can convert fully connected layers into convolution layers using the
  following steps:
 \end_layout
 
 \begin_layout Enumerate
-Do not stretch the 2x2x256 tensor, keep the dimension
+Do not stretch the 2x2x256 tensor, keep the dimension.
 \end_layout
 
 \begin_layout Enumerate
 Build 128 filters, each filter is 2x2x256.
  Passing 1024 length vector through fully connected layers can be seen as
- doing convolution with no padding and stride 1
+ doing convolution with no padding and stride one.
 \end_layout
 
 \begin_layout Enumerate
@@ -309,7 +314,76 @@ Build 3 filters, each filter is 1x1x128.
 \end_layout
 
 \begin_layout Standard
-If you do the math, there is a one-to-one map between weights in fully connected
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/CNN.png
+	lyxscale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Normal CNN architecure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/FCNN.png
+	lyxscale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Fully Convolutional Network
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we do the math, there is a one-to-one map between weights in fully connected
  layers and weights in convolution filters, as we can see in the figure.
  In general, converting any fully connected layers into convolution operations
  has the following rules:
@@ -322,7 +396,7 @@ Passing vector through fully connected layers is equivalent to doing convolution
 
 \begin_layout Itemize
 The filter size is equal to the size of input tensor, and the filter number
- is equal to the number of neurons in the next fully connect layer.
+ is equal to the number of neurons in the next fully connected layer.
 \end_layout
 
 \begin_layout Standard
@@ -359,7 +433,7 @@ literal "false"
  is used.
  The author didn't use pooling layers in order to not lose pixel information
  and make calculating receptive field easier.
- The network is shown in figure 3.2, each 32x32 patch produces a 1x1x1 tensor
+ The network is shown in figure 3.4, each 32x32 patch produces a 1x1x1 tensor
  indicating the number of objects in this patch.
  After each convolution, batch normalization and reLU activation are used
  in order to speed up convergence.
@@ -417,6 +491,105 @@ The network is a fully convolutional neural net and we can input image of
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/VGGcell.png
+	lyxscale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Original image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/VGGdots.png
+	lyxscale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Labeled image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Count-ception Dataset
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The prediction map is calculated using the original image and Count-ception
  network.
  In order to calculate the loss, we need to construct the target manually.
@@ -461,6 +634,30 @@ Use gradient descent to update the weights.
  Note that the target construction network's weights are fixed.
  We only need to update the weights for Count-ception architecture.
  
+\end_layout
+
+\begin_layout Standard
+After we have trained the Count-ception network, we can calculate the prediction
+ map for each input image.
+ In order to get the number of objects in the image, we can simply sum all
+ the pixel values in the prediction map.
+ Note that due to convolution operation, each pixel in the input image is
+ counted redundantly.
+ We can adjust the object counts using formula (1).
+ F(I) stands for the output of input image, and r is the receptive field
+ size.
+ In the example above, the receptive field of one pixel in the output is
+ 32x32, so r equals 32.
+ Each pixel in the input image is counted 32x32 times.
+ 
+\begin_inset Formula 
+\begin{equation}
+\#counts=\frac{\sum_{x,y}F(I)}{r^{2}}
+\end{equation}
+
+\end_inset
+
+
 \end_layout
 
 \end_body
