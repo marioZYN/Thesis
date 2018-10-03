@@ -82,7 +82,7 @@
 \begin_layout Standard
 Image classification, detection and localization are two major challenges
  in compute vision field.
- In this chapter, we briefly introduce these two problems and the current
+ In this chapter, we briefly introduce these three problems and the current
  state-of-art algorithms.
  Then we analyze how we can use these algorithms to solve our sea lion counting
  problem.
