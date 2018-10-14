@@ -80,11 +80,11 @@
 \begin_body
 
 \begin_layout Standard
-Image classification, detection and localization are two major challenges
- in compute vision field.
- In this chapter, we briefly introduce these two problems and the current
- state-of-art algorithms.
- Then we analyze how we can use these algorithms to solve our sea lion counting
+Image classification, detection and localization are major challenges in
+ computer vision field.
+ In this chapter, we briefly introduce these problems and the current state-of-a
+rt algorithms.
+ Then we analyze how we may use these algorithms to solve our sea lion counting
  problem.
  
 \end_layout
@@ -94,35 +94,39 @@ Image classification
 \end_layout
 
 \begin_layout Standard
-Image classification is the task of giving an input image and output the
- corresponding label.
- Before convolution neural network is used in image classification, we manually
- extract features from images and exploit these features for classifying
- images.
- It is a challenge, even for experts to design a feature extraction algorithm.
+Image classification is the task of giving an input image and outputting
+ the corresponding label.
+ Before convolution neural network is used in image classification, people
+ manually extract features from images and exploit these features for classifyin
+g images.
+ It is a challenge, even for experts to design a feature extraction algorithm
+ suitable for various kinds of situations.
  Convolutional neural network(CNN) is a special kind of deep learning architectu
 re used in computer vision.
  The convolution layer makes use of a set of learnable filters.
- A filter is used to detect the presence of specific features or patterns
+ Each filter is used to detect the presence of specific features or patterns
  present in the original image.
  The filter is convolved across the width and height of the input image,
- and a dot product is computed to give an activation map.
+ and a dot product operation is computed to give an activation map.
  Different filters which detect different features are convolved with the
  input image and the activation maps are stacked together to form the input
  for the next layer.
- As we have more and more activation maps, we can consume too much memory
- and in order to solve this problem, pooling layers are used to reduce the
- dimension of the activation maps.
+ By stacking more activation maps, we can get more abstract features.
+ As the architecture becomes deeper, we may consume too much memory and
+ in order to solve this problem, pooling layers are used to reduce the dimension
+ of the activation maps.
  There are two kinds of pooling layers: max pooling and average pooling.
  As the name states, max pooling keeps the maximum value within the filter
  and discards all the rest, while average pooling keeps the average value.
- By discarding the rest values, we reduce the dimension of the activation
- maps and thus reduce the number of parameters we need to learn.
+ By discarding some values in each filter, we reduce the dimension of the
+ activation maps and thus reduce the number of parameters we need to learn
+ and this makes deep CNN architecture possible.
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -131,7 +135,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/CNN.jpeg
-	lyxscale 10
+	lyxscale 30
+	width 60text%
 
 \end_inset
 
@@ -142,6 +147,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:CNN-architecture-for"
+
+\end_inset
+
 CNN architecture for image classification
 \end_layout
 
@@ -163,42 +174,33 @@ CNN architecture for image classification
 After each convolution operation, an activation function is added to decide
  whether a certain neuron fires or not.
  There are different kinds of activation functions as illustrated in figure
- 1.2 and they have different characteristics.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Activation-functions"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and they have different characteristics.
  Sigmoid functions squashes the output into a value between zero and one
  and it was the most popular activation function back in days since it has
- nice interpretation as a saturating 
-\begin_inset Quotes cld
-\end_inset
-
-firing rate
-\begin_inset Quotes crd
-\end_inset
-
- of a neuron.
+ nice interpretation as a saturating "firing rate" of a neuron.
  However sigmoid activation function has three major problems:
 \end_layout
 
-\begin_layout Standard
-1.
- Saturated neurons 
-\begin_inset Quotes cld
-\end_inset
-
-kill
-\begin_inset Quotes crd
-\end_inset
-
- the gradients.
+\begin_layout Enumerate
+Saturated neurons "kill" the gradients.
 \end_layout
 
-\begin_layout Standard
-2.
- Sigmoid outputs are not zero-centered.
+\begin_layout Enumerate
+Sigmoid outputs are not zero-centered.
 \end_layout
 
-\begin_layout Standard
-3.
- Exponential function is a bit compute expensive.
+\begin_layout Enumerate
+Exponential function is a bit compute expensive.
 \end_layout
 
 \begin_layout Standard
@@ -208,32 +210,25 @@ Later ReLU(Rectified Linear Unit) activation function is invented.
  function is 1 or 0.
  Theoretically ReLU activation function has larger convergence rate than
  sigmoid function.
- The problem for sigmoid function is that when we have a negative input
- value, the gradient is zero.
+ The problem for reLU function is that when we have a negative input value,
+ the gradient is zero.
  It seems to behave like our neurons which can fire or not, but in reality
  this can create dead ReLU nodes.
  Since the value and gradient are all zero when the input value is negative,
  it can happen that some neurons can never fire again.
- This is called the 
-\begin_inset Quotes cld
-\end_inset
-
-dead neuron phenomenon
-\begin_inset Quotes crd
-\end_inset
-
-.
+ This is called the "dead neuron phenomenon".
  In order to solve this problem, leaky ReLU is invented.
  Leaky ReLU does not have zero gradient at the negative part of the axis,
- but a small positive value, thus when necessary it can grow back to non
- zero, avoiding dead neuron problem.
- Nowadays leaky ReLU is the most common used activation function in deep
+ but a small positive value, thus when necessary the output value can grow
+ back to non zero, avoiding dead neuron problem.
+ Nowadays leaky ReLU is the most commonly used activation function in deep
  learning architectures.
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -242,7 +237,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/activation functions.png
-	lyxscale 10
+	lyxscale 30
+	width 60text%
 
 \end_inset
 
@@ -253,6 +249,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Activation-functions"
+
+\end_inset
+
 Activation functions
 \end_layout
 
@@ -268,15 +270,50 @@ Activation functions
 
 \begin_layout Standard
 The general idea for CNN architecture is to stack several convolution and
- pooling layers to extract features from images, then use fully connected
+ pooling layers to extract features from images, then it uses fully connected
  layers to exploit these features for classification.
  By using CNN architecture we don't need to design feature extraction algorithm
- manually, instead we can use training images to make convolution filters
- to learn the weights itself.
- After fully connected layers, we pass the output through a soft-max layer
- to convert numbers between 0 and 1, giving probability of image being of
- a particular class.
+ manually, instead we can exploit gradient descent algorithms, letting convoluti
+on filters learn the weights from our training dataset.
+ So convolution and pooling layers in CNN actually builds up an automatic
+ way for extracting features.
  
+\end_layout
+
+\begin_layout Standard
+We want CNN architecture to generate classification results, and one way
+ to do it is to output probability scores for each class.
+ Suppose we have to classify each image among N possible classes, we can
+ make our CNN architecture generate N values, each value representing the
+ probability of being a certain class.
+ Since this is a probability distribution, the summation of these N values
+ is one.
+ In CNN architecture, soft-max layer is inserted at last in order to squeeze
+ the output between zero and one, making it a legal probability value.
+ Soft-max function is defined as the following formula, and it stands for
+ the probability of an input image 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ being classified as the corresponding label 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+.
+ If this value is the largest among all the rest probabilities, then we
+ get a correct prediction.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+P\text{(y}_{i}|x_{i};W)=\frac{e^{f_{y_{i}}}}{\mathop{{\displaystyle \sum_{j}e^{f_{j}}}}}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -284,28 +321,17 @@ Image detection and localization
 \end_layout
 
 \begin_layout Standard
-Image detection and localization is a more difficult task than image classificat
-ion, because you not only need to classify the objects in the image, but
- also need to find the object location as well.
- Given an input image possibly containing multiple objects, we need to generate
- a bounding box around each object and classify the object type, as illustrated
- in figure 1.3.
- The general idea is to output the class label as well as the coordinates
- of the four corners of the bounding box.
- 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename images/object detection.png
-	lyxscale 10
+	lyxscale 30
+	width 60text%
 
 \end_inset
 
@@ -330,24 +356,120 @@ Object detection and localization
 \end_layout
 
 \begin_layout Standard
+Image detection and localization is a more difficult task than image classificat
+ion, because you not only need to classify the objects in the image, but
+ also need to find the object location as well.
+ Given an input image possibly containing multiple objects, we need to generate
+ a bounding box around each object and classify the object type, as illustrated
+ in figure 1.3.
+ The general idea is to output the class label as well as the coordinates
+ of the four corners of the bounding box.
+ Outputting the class label is a classification problem and generating bounding
+ box coordinates can be seen as a regression problem.
+ Each bounding box can be represented as a four value tuple: (
+\begin_inset Formula $x,y,w,h)$
+\end_inset
+
+ which stands for the center point coordinates, width and height of the
+ bounding box.
+ Normally we combine the classification loss and regression loss as the
+ final loss for our architecture.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/classification and regression.png
+	lyxscale 40
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Classification and localization
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Image detection and localization is a two-step problem, first we need to
  find which parts of the image may contain an object, second we need to
  classify each part.
- We call the region of image where may exist an object 
-\begin_inset Quotes cld
-\end_inset
-
-region of interests
-\begin_inset Quotes crd
-\end_inset
-
+ We call the region in the image where may exist an object "region of interests"
 (ROI).
- One straight forward way to find ROI is to use a slide window to generate
+ One straight forward way to find ROI is to use a sliding window to generate
  all possible ROI.
- However this method needs to test many positions and scales which is time
- consuming in both training phase and testing phase.
+ Since we don't know neither the location nor the size of each object, we
+ need to test too many positions and scales which is time consuming and
+ not feasible.
  There exists various kinds of image detection and localization algorithms
- differing in ROI proposing technique.
+ differing in network structure and ROI proposing techniques.
+ Just like image classification algorithms, the performance of detection
+ and localization boosts since deep learning architectures are used in this
+ field, as we can see i in figure 1.4.
+ In the following sections, I will introduce some sate-of-art object detection
+ and localization algorithms.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/object detection renaissance.png
+	lyxscale 40
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Object detection renaissance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -368,7 +490,7 @@ Train from scratch or download a pre-trained image classification model
 \begin_layout Enumerate
 Fine-tune model for detection.
  Throw away the final fully connected layer and modify it according to domain
- dependent problem.
+ dependent problems.
  
 \end_layout
 
@@ -380,34 +502,28 @@ Extract region proposals for all images, and for each region, wrap it to
 \end_layout
 
 \begin_layout Enumerate
-Train one binary SVM per class to classify region features.
- 
+Train one binary SVM per class to classify region features in order to check
+ if object exists in this region.
 \end_layout
 
 \begin_layout Enumerate
 For each class, train a linear regression model to map from cached features
- to offsets to ground truth boxes to make up for 
-\begin_inset Quotes cld
-\end_inset
-
-slightly wrong proposals
-\begin_inset Quotes crd
-\end_inset
-
-
+ to offsets of ground truth boxes in order to make up for "slightly wrong
+ proposals".
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename images/R-CNN.png
 	lyxscale 50
+	width 60text%
 
 \end_inset
 
@@ -433,28 +549,12 @@ R-CNN architecture
 
 \begin_layout Standard
 In R-CNN algorithm, the region proposal method is independent from the algorithm
- itself, and we can use whatever region proposal algorithms we like.
- In the paper, the author suggests to use 
-\begin_inset Quotes cld
-\end_inset
-
-selective search
-\begin_inset Quotes crd
-\end_inset
-
-.
+ itself, and we can use whatever region proposal algorithm we like.
+ In the paper, the author suggests to use "selective search".
  Selective search is a greedy algorithm, starting from bottom-up segmentation
- merging regions at different scales.
- This method can find 
-\begin_inset Quotes cld
-\end_inset
-
-blob-like
-\begin_inset Quotes crd
-\end_inset
-
- regions containing similar pixel values.
- For each image, there is around 2k regions of proposals.
+ and merging regions at different scales.
+ This method can find "blob-like" regions containing similar pixel values.
+ For each image, there are around 2k regions of proposals.
  
 \end_layout
 
@@ -462,13 +562,14 @@ blob-like
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename images/selective search.png
 	lyxscale 40
+	width 60text%
 
 \end_inset
 
@@ -487,10 +588,6 @@ Selective search
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -498,47 +595,50 @@ Selective search
 
 \begin_layout Standard
 R-CNN was the start-of-art algorithm for object detection in 2010.
- There are three major disadvantages for this algorithm, first of all it
- is slow at test time because it needs to run both the selective search
- and full forward path for each region proposal.
- Second, SVMs and regressors are post-hoc which can only be used in domain
- specific problem.
- For different problems we need to train SVMs and regressors from scratch.
- 
+ The ad hoc training objectives for R-CNN is the following:
 \end_layout
 
-\begin_layout Subsection
-Fast R-CNN
+\begin_layout Itemize
+Fine-tune network with softmax classifier
+\end_layout
+
+\begin_layout Itemize
+Train post-hoc linear SVMs
+\end_layout
+
+\begin_layout Itemize
+Train post-hoc bounding-box regressors
 \end_layout
 
 \begin_layout Standard
-Fast R-CNN is invented in order to break the bottleneck of R-CNN architecture.
- Instead of generating regions of proposals first and then use CNN to classify
- each region, fast R-CNN architecture first forwards the whole image into
- a CNN and then generates regions of proposals from the feature map.
- By swapping the order, fast R-CNN architecture shares computation of convolutio
-nal layers between proposals for an image.
- After regions of proposals are generated, fast R-CNN architecture uses
- 
-\begin_inset Quotes cld
-\end_inset
+There are three major disadvantages for this algorithm, first of all it
+ is slow at test time because it needs to run both the selective search
+ and full forward path for each region proposal.
+ It takes around 47 s/image with VGG16 as the base achitecture.
+ Second, SVMs and regressors are post-hoc which can only be used in domain
+ specific problem.
+ For different problems we need to train SVMs and regressors again from
+ scratch.
+ Third, the whole architecture is not end-to-end and this complex multistage
+ training pipeline is difficult to implement.
+\end_layout
 
-ROI Pooling
-\begin_inset Quotes crd
-\end_inset
+\begin_layout Subsection
+SPP-net
+\end_layout
 
- to wrap ROI into a predefined size.
- ROI pooling is actually a pooling operation with changeable filter size.
- This operation is necessary because we need to forward the feature vector
- through fully connected layers and the feature vector size is fixed once
- we set up the architecture.
- Fast R-CNN architecture can be trained end-to-end and we don't need to
- train separate modules like SVMs in R-CNN architecture.
- Fast R-CNN is a lot faster than R-CNN, according to the author, faster
- R-CNN training phase is 8 time faster than R-CNN and it only takes 0.32
- seconds to make inference at test time.
- However this inference time does not include generating regions of proposals,
- we still need to use other methods like selective search to find ROI.
+\begin_layout Standard
+SPP-net solves the problem of slow inference time in R-CNN architecture,
+ and it achieves this by sharing computation.
+ Recall that in R-CNN, we first generate ROI and then classify each ROI
+ using CNN.
+ Since the original image may be large, we could generate a lot of ROI regions
+ and each of them needs to be forwarded through a CNN, which is time consuming.
+ Now SPP-net swaps the order by first forwarding the original image through
+ a CNN architecture, and then generate ROI from the feature map we get out
+ of convolution.
+ Besides sharing computation, SPP-net also invents a new pooling operation
+ called "Spatial Pyramid Pooling".
  
 \end_layout
 
@@ -546,13 +646,14 @@ ROI Pooling
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename images/fast r-cnn.png
-	lyxscale 20
+	filename images/SPP-net.png
+	lyxscale 60
+	width 60text%
 
 \end_inset
 
@@ -563,6 +664,236 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:SPP-net"
+
+\end_inset
+
+SPP-net
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Recall that in CNN architecture, we have convolution and pooling layers
+ to extract features from images, and then we use fully connected layers
+ to exploit these features for classification.
+ However there is a technical issue in the training and testing of the CNNs:
+ the prevalent CNNs require a fixed input size (e.g.
+ 224x224), which limits both the aspect ratio and the scale of the input
+ image.
+ When applied to images of arbitrary sizes, current CNN methods mostly fit
+ the input image to the fixed size, either via cropping or via warping.
+ However both methods have drawbacks: cropping can destroy whole image structure
+ and wrapping can cause distortion.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/crop and warp.png
+	lyxscale 80
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Crop-and-warp"
+
+\end_inset
+
+Crop and warp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So why do we need to have fixed sized input? If we think about it, convolution
+ and pooling operations do not require fixed size input, only fully connected
+ layers do.
+ When we forward various sized images through convolution and pooling layers,
+ what we get are only tensors with different shapes.
+ On the other hand, fully connected layers require fixed sized input by
+ their definition.
+ SPP-net creates spatial pyramid pooling layers to deal with this issue.
+ By adding SPP layer right before fully connected layer, we can create fixed
+ sized feature vector from tensors in different shapes.
+ SPP-layer is actually a bunch of max pooling operations combined together
+ as described in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Spatial-pyramid-pooling"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Each max pooling in SPP divides the input tensor evenly to a predefined
+ number of areas.
+ For example, the blue max pooling area always divides the whole tensor
+ into 16 parts, no matter what shape the input tensor has.
+ Each part will be max pooled to generate a single output value.
+ Also note that 256-d is the number of channels of the input tensor, thus
+ the final feature vector's length is calculated as: 
+\begin_inset Formula $(16+4+1)*256=5376$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/SPP.png
+	lyxscale 60
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Spatial-pyramid-pooling"
+
+\end_inset
+
+Spatial pyramid pooling
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+SPP-net fixes one issue with R-CNN: it makes testing fast, but it still
+ inherits the rest of R-CNN's problems:
+\end_layout
+
+\begin_layout Itemize
+Ad hoc training objectives.
+\end_layout
+
+\begin_layout Itemize
+Training is slow, taking a lot of disk space.
+ 
+\end_layout
+
+\begin_layout Standard
+SPP-net also creates a new issue: we can not update parameters below SPP
+ layer during training, since the SPP layer combines bunch of max pooling
+ operations of different filter sizes, the gradient can not follow through
+ it because there is overlapping within these filters.
+\end_layout
+
+\begin_layout Subsection
+Fast R-CNN
+\end_layout
+
+\begin_layout Standard
+Fast R-CNN is invented as an improved version of R-CNN architecture.
+ It exploits the idea of swapping the order of convolution and ROI proposing
+ which makes it fast at test time, like SPP-net.
+ It is also a network trained end-to-end, avoiding the complex multistage
+ architecture in R-CNN.
+ Fast R-CNN has higher mean average precision than R-CNN and SPP-net.
+ The whole network is described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fast-R-CNN-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/fast r-cnn.png
+	lyxscale 30
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fast-R-CNN-architecture"
+
+\end_inset
+
 Fast R-CNN architecture
 \end_layout
 
@@ -571,13 +902,30 @@ Fast R-CNN architecture
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+After regions of proposals are generated, fast R-CNN architecture uses "ROI
+ Pooling" to wrap ROI into a predefined size.
+ ROI pooling is actually a single-level SPP layer.
+ Fast R-CNN architecture can be trained end-to-end and we don't need to
+ train separate modules like SVMs in R-CNN architecture.
+ By using only a single-level SPP layer, gradients can flow across ROI pooling
+ layer and training the whole network at once is possible.
+ Fast R-CNN is a lot faster than R-CNN, and according to the author, the
+ training phase is 8 times faster than R-CNN and it only takes 0.32 seconds
+ to make an inference at test time.
+ However this inference time does not include generating regions of proposals,
+ and we still need to use other methods like selective search to find ROI.
+ Recall that we could use "selective search" as an independent method to
+ find region of proposals, so the next natural idea is: why don't we implement
+ region proposing methods inside the network and let it learn how to generate
+ proposals during training.
+ Faster R-CNN is invented to deal with it.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -585,33 +933,74 @@ Faster R-CNN
 \end_layout
 
 \begin_layout Standard
-Faster R-CNN inserts a 
-\begin_inset Quotes cld
-\end_inset
-
-Region Proposal Network
-\begin_inset Quotes crd
-\end_inset
-
-(RPN) after the last convolutional layer of fast R-CNN and thus avoids using
- selective search to generate ROI.
+If we summarize all the algorithms above, we can realize that object detection
+ problem is solved by two steps.
+ First we use some methods to generate region proposals.
+ Second we use classification algorithms to classify each area and use regressio
+n to fine-tune bounding box positions.
+ So far faster R-CNN is the most powerful algorithm exploiting this two-step
+ approach for object detection.
+ Faster R-CNN inserts a "Region Proposal Network"(RPN) after the last convolutio
+nal layer of fast R-CNN and thus avoids using selective search to generate
+ ROI.
  RPN is trainable to produce region proposals directly and there is no need
- for external region proposals.
+ to use external region proposing methods.
  The rest of modules are the same as fast R-CNN.
+ The whole structure is demonstrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fast-R-CNN-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and there are four major components in this network:
+\end_layout
+
+\begin_layout Enumerate
+Convolution layers.
+ Faster R-CNN exploits the basic idea of CNN, using convolution and pooling
+ layers to extract feature maps from original image.
+ These feature maps are later used in RPN and fully connected layers.
+\end_layout
+
+\begin_layout Enumerate
+Region Proposal Network.
+ For each pixel value in the feature maps, 9 anchors are created as candidates
+ for region proposals and RPN uses softmax to classify each anchor as foreground
+ or background (A foreground anchor contains an object).
+ Then it uses bounding box regression to modify anchors for more precise
+ proposals.
+\end_layout
+
+\begin_layout Enumerate
+ROI pooling.
+ This layer gathers feature maps and region proposals, making it into fixed
+ length feature vector for fully connected layers.
+\end_layout
+
+\begin_layout Enumerate
+Classification.
+ Use the fixed length feature vector for classification and final bounding
+ box regression.
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename images/faster r-cnn.png
-	lyxscale 30
+	lyxscale 50
+	width 60text%
 
 \end_inset
 
@@ -622,15 +1011,17 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Faster-R-CNN-architecture"
+
+\end_inset
+
 Faster R-CNN architecture
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -642,34 +1033,127 @@ Faster R-CNN architecture
 \begin_layout Standard
 RPN is a small network for classifying object or non-object and it can regress
  bounding box locations as well.
- A sliding window is used on the convolutional feature map and the position
- of the sliding window provides localization information with reference
- to the image.
- Box regression provides finer localization information with reference to
- this sliding window.
- Since we don't know the shape of objects in the image, in order to increase
- performance we use N anchor boxes at each location.
- Regression gives offsets from each anchor boxes to justify each ROI.
- Faster R-CNN is about ten times faster than fast R-CNN architecture and
- achieves similar performance result with respect to fast R-CNN.
+ A sliding window is used on the convolutional feature maps and the position
+ of the sliding window provides location information with reference to the
+ image.
+ As we can see in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:RPN"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the convolutional feature map has 256 channels and after another 3x3 convoluti
+on to gather local information, we can generate a feature vector of length
+ 256 for each pixel.
+ This feature vector is used for both classification and bounding box regression.
+ Since we do not know in advance the size of objects, for each pixel we
+ generate k anchor boxes as region proposal candidates.
+ Anchors are represented by 4 values 
+\begin_inset Formula $(c_{x},c_{y},width,height)$
+\end_inset
+
+ and they can act as foreground or background.
+ So finally we get 2k scores and 4k coordinates as the output of RPN.
+ 
+\end_layout
+
+\begin_layout Standard
+How many anchors will we generate for each image? Suppose the original image
+ is 800x600x3, and we use VGG16 as our feature extraction network.
+ VGG16 downsamples an image to its 1/16, so if set k = 9, the number of
+ anchors is calculated as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+ceil(800/16)*ceil(600/16)*9=50*3*9=17100
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are quite a lot anchors compared to selective search which generates
+ around 2k proposals per image.
+ Actually during training we sort anchor candidates by their classification
+ scores and randomly select 256 positive and 256 negative ones as a training
+ batch.
+ IoU is short for "intersection of union" which measures the common area
+ between an region proposal and ground truth bounding box.
+ If IoU is larger than 0.7, we think it as a positive anchor and if it is
+ smaller than 0.3, we view it as negative.
+ Those anchors having 0.3 < IoU < 0.7 do not get involved in the training
+ phase.
+ 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/RPN2.png
+	width 60sp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:RPN"
+
+\end_inset
+
+RPN
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here is a speed comparison among object detection algorithms we just introduced.
+ All these algorithms exploit the idea of the two-step approach: First generate
+ region proposals from original images.
+ Second use classification techniques to classify each area and use regression
+ to fine-tune bounding boxes.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename images/RPN.png
-	lyxscale 30
+	filename images/RCNN test speed.png
+	lyxscale 60
+	width 60text%
 
 \end_inset
 
@@ -680,61 +1164,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-RPN architecture
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/anchor.png
-	lyxscale 30
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Anchor boxes
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Region proposal network
+R-CNN test speed
 \end_layout
 
 \end_inset
@@ -752,7 +1182,53 @@ Region proposal network
 \end_layout
 
 \begin_layout Section
-Counting objects by classification
+Counting objects by classification and detection
+\end_layout
+
+\begin_layout Standard
+Can we use image classification and detection techniques here in our object
+ counting problem? Recall that the problem we face is giving an input image,
+ we need to output the number of each object and this requires both classificati
+on and object counting.
+ Also note that the dataset we have does not include a bounding box around
+ each object, but a colored dot at the center.
+ Here is how we may use image classification and detection techniques to
+ solve object counting problem:
+\end_layout
+
+\begin_layout Itemize
+Classification: We can use a sliding window to generate patches from an
+ image, and then use CNN architecture to classify each patch.
+ If originally we have 5 types of sea lions to classify, here we are doing
+ 6-class classification, including the background patch.
+ During inference, we first separate the image into patches and then classify
+ each patch.
+ We sum up all the patches to get the final result.
+\end_layout
+
+\begin_layout Itemize
+Detection and localization: Since we do not have a bounding box around each
+ object, and in order to train object detection network we need to first
+ create a bounding box from the center dot.
+ By approximating the size of each sea lion, we could create the bounding
+ box manually.
+ Then we can do a faster R-CNN architecture to localize each object.
+ During inference, each bounding box prediction indicates an object existence.
+\end_layout
+
+\begin_layout Standard
+Theoretically both of the methods should work, but problems do exist for
+ each of them.
+ If we generate object counts by sliding window and image classification,
+ we naturally assume that each patch maximumly contains a single object.
+ In order to make count prediction precise, we need to carefully design
+ the patch size so that most of the patches contain only one sea lion or
+ no sea lion at all.
+ As for object detection, it seems over-killing here because we don't need
+ to predict object location when we only want to generate object counts.
+ In our sea lion counting problem, we tried to use sliding window and image
+ classification as a start-up.
+ 
 \end_layout
 
 \end_body

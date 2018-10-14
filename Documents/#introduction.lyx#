@@ -84,7 +84,7 @@ Steller sea lions in the western Aleutian Islands have declined 94 percent
  in the last 30 years.
  The endangered western population, found in the North Pacific, are focus
  of conservation efforts which require annual population counts.
- Specifically trained scientists at NOAA Fisheriers Alaska Fisheries Science
+ Specifically trained scientists at NOAA Fisheries Alaska Fisheries Science
  Center conduct these surveys using airplanes and unoccupied aircraft systems
  to collect aerial images.
  Having accurate population estimates enables scientists to better understand
@@ -99,15 +99,14 @@ Steller sea lions in the western Aleutian Islands have declined 94 percent
  and allow experts to focus on the core research issue.
  Plus, advancements in computer vision applied to aerial population counts
  may also greatly benefit other endangered species.
- 
 \end_layout
 
 \begin_layout Standard
-Since Alex reintroduced CNN architecture into computer vision field, deep
- learning methods is the state-of-art for image classification, localization,
- segmentation, etc...
- Image classification is the task of giving an input image, output a correspondi
-ng label.
+Since Alex re-introduced CNN architecture into computer vision field, deep
+ learning methods become the state-of-art for image classification, localization
+, and segmentation, etc...
+ Image classification is the task of giving an input image, outputting a
+ corresponding label.
  The algorithm is usually trained with massive labeled dataset and the outputs
  are constrained to the labels we have in the training samples.
  Image localization and segmentation are more difficult than classification.
@@ -135,44 +134,53 @@ The purpose for this thesis is to develop an algorithm for simultaneous
  counts for cells and tissues, helping doctors to analyze the disease.
  Moreover, the training dataset is a lot easier to construct: we only need
  to have a labeled dot for each object, no bounding boxes are required.
- 
+ This kind of dataset is more common than bounding box labeled 
 \end_layout
 
 \begin_layout Standard
 In the thesis, we use the sea lions dataset provided by NOAA Kaggle Competition
  and build a fully convolutional network based on Count-Ception Architecture
- introduced in .
+ introduced in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/CohenLB17"
+literal "false"
+
+\end_inset
+
+.
  The thesis is structured as follows:
 \end_layout
 
 \begin_layout Itemize
-In Chapter 1, An overview for image classification, localization and segmentatio
-n is provided and explains how they may be used in our counting problem.
+In Chapter 1, we briefly talk about image classification, detection and
+ localization algorithms.
+\end_layout
+
+\begin_layout Itemize
+In Chapter 2, Count-ception Architecture is introduced.
+\end_layout
+
+\begin_layout Itemize
+In Chapter 3, our algorithm is discussed, doing object classification and
+ counting at the same time.
  
 \end_layout
 
 \begin_layout Itemize
-In Chapter 2, Count-Ception Architecture is introduced.
+In Chapter 4, we deal with dataset construction and preprocessing techniques.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 3, Our algorithm is discussed.
+In Chapter 5, algorithm performance is analyzed.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 4, We deal with dataset construction and preprocessing techniques.
+In Chapter 6, conclusions are provided.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 5, Performance is analyzed.
-\end_layout
-
-\begin_layout Itemize
-In Chapter 6, Conclusions are provided.
-\end_layout
-
-\begin_layout Itemize
-In Chapter 7, Issues and further improvements are discussed.
+In Chapter 7, issues and further improvements are discussed.
 \end_layout
 
 \end_body

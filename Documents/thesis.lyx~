@@ -68,7 +68,6 @@
 \paperfontsize 11
 \spacing onehalf
 \use_hyperref true
-\pdf_author "Zhou Yinan"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -585,7 +584,7 @@ filename "introduction.lyx"
 \end_layout
 
 \begin_layout Chapter
-First chapter
+Deep learning methods in computer vision
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:first-chapter"
@@ -606,7 +605,7 @@ filename "chapter-1/chapter-1.lyx"
 \end_layout
 
 \begin_layout Chapter
-Second chapter
+Count-ception
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:second-chapter"

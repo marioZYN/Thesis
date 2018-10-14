@@ -79,6 +79,11 @@
 
 \begin_body
 
+\begin_layout Standard
+In this chapter, we talk about Count-ception architecture which is based
+ on inception modules and fully convolutional network.
+\end_layout
+
 \begin_layout Section
 Inception Network
 \end_layout
@@ -91,15 +96,8 @@ The Inception network is an important milestone of CNN classifiers.
  less effective and lead to overfitting.
  The Inception network is carefully designed in terms of speed and accuracy
  while keeping the computational budget constant.
- The network is organized in the form of 
-\begin_inset Quotes cld
-\end_inset
-
-Inception module
-\begin_inset Quotes crd
-\end_inset
-
- which makes it possible for the network to grow both in width and depth.
+ The network is organized in the form of "Inception module" which makes
+ it possible for the network to grow both in width and depth.
  The performance is verified by GoogleLeNet, a 22 layers deep network which
  won ILSVRC14 competition.
  
@@ -115,17 +113,17 @@ The main difference between Inception module and normal CNN convolution
  training phase to decide the best approximation area.
  The outputs of each filter are stacked together to form the input of the
  next stage.
- As we can see in the figure, there are three shapes of filter: 1x1, 3x3
+ As we can see in figure 2.1, there are three shapes of filter: 1x1, 3x3
  and 5x5.
- The 1x1 filter is also used for dimension reduction.
- In figure a, we can see the naive implementation of this idea.
+ The 1x1 filter is used for dimension reduction by decreasing output channels.
+ In figure 2.1 (a), we can see the naive implementation of this idea.
  This implementation, however, has one big issue, even a modest number of
  5x5 convolutions can be prohibitively expensive on top of a convolutional
  layer with a large number of filters.
  This problem becomes even more pronounced when we stack all the outputs
  together.
  This leads to the second implementation structure, as we can see in figure
- b.
+ (b).
  Whenever the computational requirements increase too much, we can simply
  apply a 1x1 convolution to reduce the dimension.
  Another thing to mention is the max pooling layer which exists only due
@@ -134,9 +132,9 @@ The main difference between Inception module and normal CNN convolution
  and the inventor of Inception module decided to add the max pooling layer
  into the structure.
  Nowadays people start to argue about pooling layers, on one hand, pooling
- layers reduce the dimension of tensors to make deep network possible, but
- on the other hand, pooling layers miss pixel information which can hurt
- the performance.
+ layers reduce the dimension of tensors to make deeper network possible,
+ but on the other hand, pooling layers miss pixel information which can
+ hurt the performance.
  In Count-ception architecture the author does not use pooling layers.
  
 \end_layout
@@ -157,8 +155,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/inception_model_native.png
-	lyxscale 10
-	width 50text%
+	lyxscale 30
+	width 40text%
 
 \end_inset
 
@@ -189,8 +187,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/inception_model_real.png
-	lyxscale 10
-	width 50text%
+	lyxscale 30
+	width 40text%
 
 \end_inset
 
@@ -258,7 +256,8 @@ Inception v2 uses two 3x3 filters to replace 5x5 filters, decomposes nxn
 \end_layout
 
 \begin_layout Itemize
-Inception v3 introduces RMSprop, factorized 7x7 filters and batch normalization.
+Inception v3 introduces RMSprop optimization algorithm, factorized 7x7 filters
+ and batch normalization.
 \end_layout
 
 \begin_layout Itemize
@@ -272,13 +271,17 @@ Fully Convolutional Network
 \begin_layout Standard
 F-CNN is short for fully convolutional neural net which is a convolutional
  network without fully connected layers.
- The whole network is built by convolution layers and pooling layers.
+ The whole network is built by convolution layers and pooling layers only.
  Normal CNN architectures can be seen as a pipeline structure: first using
  several convolution and pooling layers to extract features from images,
  then using fully connected layers to exploit these features for classification.
  This structure has one disadvantage, once we set up the architecture we
  can not change the image size anymore, otherwise we can not forward the
  tensor into fully connected layers.
+ So it is very common to see that in many CNN architectures, the first step
+ is to wrap the input image into a certain size.
+ Wrapping images could hurt the performance because it changes the aspect
+ ratio, causing distortion.
  
 \end_layout
 
@@ -299,7 +302,7 @@ ation with one hidden layer of size 128 neurons.
 \end_layout
 
 \begin_layout Enumerate
-Do not stretch the 2x2x256 tensor, keep the dimension.
+Do not stretch the 2x2x256 tensor, instead keep the dimension.
 \end_layout
 
 \begin_layout Enumerate
@@ -323,7 +326,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/CNN.png
-	lyxscale 10
+	lyxscale 30
+	width 80text%
 
 \end_inset
 
@@ -357,7 +361,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/FCNN.png
-	lyxscale 10
+	lyxscale 30
+	width 80text%
 
 \end_inset
 
@@ -395,7 +400,7 @@ Passing vector through fully connected layers is equivalent to doing convolution
 \end_layout
 
 \begin_layout Itemize
-The filter size is equal to the size of input tensor, and the filter number
+The filter size is equal to the size of input tensor, and number of filters
  is equal to the number of neurons in the next fully connected layer.
 \end_layout
 
@@ -407,10 +412,13 @@ Converting fully connected layers into convolution layers has several benefits.
  can directly forward it through the network.
  Second, we do not get a single vector at the output, instead we get a tensor.
  This means if we are doing image classification and we feed the network
- with a large size image, we will not get a single probability vector but
- a heat map.
+ with an image with larger size, we will not get a single probability vector
+ but a heat map.
  Thus we can exploit the heat map for further processing.
- 
+ Third, modern deep learning frameworks like tesorflow and pytorch have
+ optimization for convolution operations, so by doing computation in a fully
+ convolutional manner, we can get the result faster than doing computation
+ batch-wise.
 \end_layout
 
 \begin_layout Section
@@ -433,10 +441,10 @@ literal "false"
  is used.
  The author didn't use pooling layers in order to not lose pixel information
  and make calculating receptive field easier.
- The network is shown in figure 3.4, each 32x32 patch produces a 1x1x1 tensor
- indicating the number of objects in this patch.
- After each convolution, batch normalization and reLU activation are used
- in order to speed up convergence.
+ The network is shown in figure 2.4, each 32x32 region produces a 1x1x1 tensor
+ indicating the number of objects contained in this region.
+ After each convolution, batch normalization and leaky reLU activation are
+ used in order to speed up convergence.
  
 \end_layout
 
@@ -450,8 +458,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/Count-ception.png
-	lyxscale 10
-	scale 40
+	lyxscale 30
+	width 80text%
 
 \end_inset
 
@@ -482,7 +490,7 @@ The network is a fully convolutional neural net and we can input image of
  with 320x320 image, the output tensor will be 289x289x1.
  In order to train this network we need to construct our training dataset.
  The network is targeting at producing object counts in the image, and each
- object has a dot label at center, as we can see in figure 3.3.
+ object has a dot label at center, as we can see in figure 2.5.
  Figure a is the original image and we need to count the number of cells
  in it.
  Figure b is the labeled image where each dot corresponds to the center
@@ -507,6 +515,7 @@ status open
 \begin_inset Graphics
 	filename images/VGGcell.png
 	lyxscale 10
+	width 40text%
 
 \end_inset
 
@@ -528,9 +537,6 @@ Original image
 \end_inset
 
 
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Float figure
 wide false
 sideways false
@@ -541,6 +547,7 @@ status open
 \begin_inset Graphics
 	filename images/VGGdots.png
 	lyxscale 10
+	width 40text%
 
 \end_inset
 
@@ -580,10 +587,6 @@ Count-ception Dataset
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -594,9 +597,9 @@ The prediction map is calculated using the original image and Count-ception
  network.
  In order to calculate the loss, we need to construct the target manually.
  The target construction network takes the labeled image and produces a
- heat map.
+ target heat map.
  If an output value in the heat map is not zero, it means the receptive
- field of it contains an object.
+ field of it contains no object.
  The target construction network is a simple one layer CNN network containing
  only a convolution operation of 0 padding and stride 1.
  The filter is filled with all ones and its size is 32x32, same as the Count-cep
@@ -605,11 +608,7 @@ tion architecture's receptive field.
 \end_layout
 
 \begin_layout Standard
-The whole procedure for Count-ception is listed below:
-\begin_inset Newline newline
-\end_inset
-
-
+The whole procedure for Count-ception is the following:
 \end_layout
 
 \begin_layout Enumerate
@@ -644,8 +643,7 @@ After we have trained the Count-ception network, we can calculate the prediction
  Note that due to convolution operation, each pixel in the input image is
  counted redundantly.
  We can adjust the object counts using formula (1).
- F(I) stands for the output of input image, and r is the receptive field
- size.
+ F(I) stands for the heat map, and r is the receptive field size.
  In the example above, the receptive field of one pixel in the output is
  32x32, so r equals 32.
  Each pixel in the input image is counted 32x32 times.

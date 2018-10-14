@@ -584,7 +584,7 @@ filename "introduction.lyx"
 \end_layout
 
 \begin_layout Chapter
-First chapter
+Deep learning methods in computer vision
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:first-chapter"
@@ -605,7 +605,7 @@ filename "chapter-1/chapter-1.lyx"
 \end_layout
 
 \begin_layout Chapter
-Second chapter
+Count-ception
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:second-chapter"
@@ -647,7 +647,7 @@ filename "chapter-3/chapter-3.lyx"
 \end_layout
 
 \begin_layout Chapter
-Fourth chapter
+Dataset
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:fourth-chapter"

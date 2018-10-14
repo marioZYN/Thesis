@@ -93,7 +93,7 @@ The goal of Steller Sea Lion Count competition is to estimate each type
  one with colored dots in the center of each sea lion.
  Different images may have different sizes but all the sizes are around
  4500x3000x3, thus the image is quite large occupying around 5MB space.
- The high resolution images bring us two major problems.
+ The large amount of high resolution images bring us two major problems.
  First, during training we need to deal with memory consumption and we can
  not have a large number of batch size, otherwise they won't fit into GPU
  memory.
@@ -103,31 +103,12 @@ The goal of Steller Sea Lion Count competition is to estimate each type
  Different color indicates different sea lion types:
 \end_layout
 
-\begin_layout Itemize
-red: adult males
-\end_layout
-
-\begin_layout Itemize
-magenta: subadult males
-\end_layout
-
-\begin_layout Itemize
-brown: adult females
-\end_layout
-
-\begin_layout Itemize
-blue: juveniles
-\end_layout
-
-\begin_layout Itemize
-green: pups
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -139,7 +120,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/0.jpg
-	lyxscale 10
+	lyxscale 5
+	width 45text%
 
 \end_inset
 
@@ -158,7 +140,9 @@ Original image
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
+
 \begin_inset Float figure
 wide false
 sideways false
@@ -168,7 +152,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/0_dot.jpg
-	lyxscale 10
+	lyxscale 5
+	width 45text%
 
 \end_inset
 
@@ -180,11 +165,6 @@ status open
 
 \begin_layout Plain Layout
 Labeled image
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -209,13 +189,29 @@ Training image pair
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+red: adult males
+\end_layout
+
+\begin_layout Itemize
+magenta: subadult males
+\end_layout
+
+\begin_layout Itemize
+brown: adult females
+\end_layout
+
+\begin_layout Itemize
+blue: juveniles
+\end_layout
+
+\begin_layout Itemize
+green: pups
 \end_layout
 
 \begin_layout Standard
@@ -235,7 +231,19 @@ As we can see in the figure, there are some black regions in the labeled
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/distribution.png
+	lyxscale 10
+	width 70text%
+
+\end_inset
+
+
+\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -261,10 +269,10 @@ Data Preprocessing
 \begin_layout Standard
 In order to construct the training dataset, we need to do some data preprocessin
 g.
- First of all, we use blob detection to find the color of each dot and its
- coordinates.
+ First of all, we use blob detection to find the color of each centered
+ dot and its coordinates.
  Then we can use these coordinates to construct target maps which are used
- in our Count-ception architecture.
+ in Count-ception architecture.
  Data augmentation is used to balance sea lion types and improve classification
  performance.
  
@@ -286,8 +294,9 @@ In computer vision, blob detection methods are aimed at detecting regions
 \end_layout
 
 \begin_layout Standard
-A dot in labeled images is a blob which contains the same pixel values,
- thus we can use blob detection to find the center coordinates of the dot.
+A dot in labeled images is a blob which contains the same pixel values within
+ a small region, thus we can use blob detection to find the center coordinates
+ of the dot.
  After we get the center coordinates, we can use R, G, B values to decide
  the color and get the corresponding sea lion type.
  Luckily we don't need to implement blob detection algorithm from scratch,
@@ -306,7 +315,7 @@ In order to make Count-ception architecture work, we need to construct the
  After we get the coordinate for each sea lion, we can construct a virtual
  image indicating positions of each sea lion.
  The virtual image has the same dimension as the original image and has
- 255 pixel value at each sea lion coordinate, all the other pixel values
+ 255 pixel value at each sea lion postition, all the other pixel values
  are zero.
  
 \end_layout
@@ -318,45 +327,16 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename images/0_cell2.png
-	lyxscale 10
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Original Image
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
 \begin_inset Graphics
-	filename images/0_dot2.png
+	filename images/0_cell2.png
 	lyxscale 10
+	width 45text%
 
 \end_inset
 
@@ -367,7 +347,59 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Virtual Image
+Original image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/0_dot2.png
+	lyxscale 10
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Virtual image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Preprocessed image
 \end_layout
 
 \end_inset
@@ -386,16 +418,15 @@ Virtual Image
 
 \begin_layout Standard
 As mentioned before, target map network is a simple CNN architecture with
- one convolution layer.
- The target construction network is used on the virtual image in order to
- get the target map which is a heat map indicating positive object area.
+ one convolution layer and it is used on the virtual image in order to get
+ the activation map which is a heat map indicating positive object area.
  The convolution operation is implemented by pad zero and stride one and
  the filter is filled with ones.
  When we convolve the filter with the virtual image, we will get a positive
  value if the object dot is inside the filter, otherwise we will get a zero.
  Let us see an example, we have a virtual image of size 120x120 and there
  is an object dot at center of the image.
- After convolution, the virtual image turns into target map.
+ After convolution, the virtual image turns into activation map.
  
 \end_layout
 
@@ -406,9 +437,15 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/virtual_image.png
+	width 20text%
 
 \end_inset
 
@@ -430,18 +467,15 @@ Virtual image
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
 \begin_inset Graphics
 	filename images/activation_map.png
+	width 20text%
 
 \end_inset
 
@@ -452,7 +486,28 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Target map
+Activation map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Receptive field
 \end_layout
 
 \end_inset
@@ -498,6 +553,7 @@ status open
 \begin_inset Graphics
 	filename images/filter.png
 	lyxscale 10
+	width 30text%
 
 \end_inset
 
@@ -533,8 +589,8 @@ Data Augmentation
 \begin_layout Standard
 Data augmentation is a common technique used to improve the performance
  of neural networks.
- Overfitting is a challenge for deep learning models due to the lack of
- data and complex structures.
+ Overfitting is a challenge for deep learning models due to insufficient
+ amount of data and complex network structures.
  We can not simplify the deep learning architecture when we have a non trivial
  problem but we can increase the training data by data augmentation.
  Given an input image, we can rotate, flip and zoom it to enrich our dataset.
