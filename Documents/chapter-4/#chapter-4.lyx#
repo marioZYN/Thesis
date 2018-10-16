@@ -86,47 +86,39 @@ Steller Sea Lion Dataset
 \begin_layout Standard
 The goal of Steller Sea Lion Count competition is to estimate each type
  of sea lion in each one of test images.
- The different types of sea lion are: adult males, subadult males, adult
+ The different types of sea lions are: adult males, subadult males, adult
  females, and pups.
  There are totally 947 training images and 18639 testing images.
  For each training image, we have two versions: the original one and the
  one with colored dots in the center of each sea lion.
  Different images may have different sizes but all the sizes are around
  4500x3000x3, thus the image is quite large occupying around 5MB space.
- The high resolution images bring us two major problems.
- First, during training we need to deal with memory consumption and we can
- not have a large number of batch size, otherwise they won't fit into GPU.
+ The large amount of high resolution images brings us two major problems.
+ First, during training we need to deal with memory consumption and we may
+ need to split the image into patches or resize the image in order to fit
+ them into GPU's memory.
  Second, in the testing phase, we need to have short inference time due
  to huge amount testing images.
- In figure 4.1, a sampled training image pair is provided.
- Different color indicates different sea lion types:
-\end_layout
+ In figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Training-image-pair"
+plural "false"
+caps "false"
+noprefix "false"
 
-\begin_layout Itemize
-red: adult males
-\end_layout
+\end_inset
 
-\begin_layout Itemize
-magenta: subadult males
-\end_layout
-
-\begin_layout Itemize
-brown: adult females
-\end_layout
-
-\begin_layout Itemize
-blue: juveniles
-\end_layout
-
-\begin_layout Itemize
-green: pups
+, a sampled training image pair is provided.
+ Different dot color indicates different sea lion types:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -138,7 +130,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/0.jpg
-	lyxscale 10
+	lyxscale 5
+	width 45text%
 
 \end_inset
 
@@ -157,7 +150,9 @@ Original image
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
+
 \begin_inset Float figure
 wide false
 sideways false
@@ -167,7 +162,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/0_dot.jpg
-	lyxscale 10
+	lyxscale 5
+	width 45text%
 
 \end_inset
 
@@ -191,15 +187,16 @@ Labeled image
 
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
 \begin_layout Plain Layout
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Training-image-pair"
+
+\end_inset
+
 Training image pair
 \end_layout
 
@@ -208,13 +205,29 @@ Training image pair
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+red: adult males
+\end_layout
+
+\begin_layout Itemize
+magenta: subadult males
+\end_layout
+
+\begin_layout Itemize
+brown: adult females
+\end_layout
+
+\begin_layout Itemize
+blue: juveniles
+\end_layout
+
+\begin_layout Itemize
+green: pups
 \end_layout
 
 \begin_layout Standard
@@ -222,19 +235,31 @@ As we can see in the figure, there are some black regions in the labeled
  images.
  The black regions are added by the data provider in order to filter out
  controversial sea lions.
- Another thing to notice is the number of sea lions in each image.
- In the image pair example above, we have around 900 sea lions but the number
- of sea lions varies a lot in different images.
- More specifically, we can have only one or two sea lions in some images.
- Also it is not an uniform distribution for sea lion types.
- Here is a summary of sea lion type distribution in the training dataset:
+ Another thing to notice is that the number of sea lions varies a lot in
+ different images.
+ We can have an image containing more than 900 sea lions or an image containing
+ only 3.
+ Also it is not an uniform distribution for different sea lion types.
+ Here is a summary of sea lion type distribution in the whole training dataset:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/distribution.png
+	lyxscale 30
+	width 70text%
+
+\end_inset
+
+
+\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -260,10 +285,10 @@ Data Preprocessing
 \begin_layout Standard
 In order to construct the training dataset, we need to do some data preprocessin
 g.
- First of all, we use blob detection to find the color of each dot and its
- coordinates.
- Then we can use these coordinates to construct target maps which are used
- in our Count-ception architecture.
+ First of all, we use blob detection to get the color of each centered dot
+ and its coordinates.
+ Then we can use these coordinates to construct dot labeled inputs which
+ are used in Count-ception architecture.
  Data augmentation is used to balance sea lion types and improve classification
  performance.
  
@@ -285,14 +310,102 @@ In computer vision, blob detection methods are aimed at detecting regions
 \end_layout
 
 \begin_layout Standard
-A dot in labeled images is a blob which contains the same pixel values,
- thus we can use blob detection to find the center coordinates of the dot.
- After we get the center coordinates, we can use R, G, B values to decide
- the color and get the corresponding sea lion type.
+A dot in labeled images is a blob which contains the similar pixel values
+ within a small region, thus we can use blob detection to find the center
+ coordinates of the dot.
+ After we get the center coordinates, we can use RGB values to classify
+ its color and get the corresponding sea lion type.
  Luckily we don't need to implement blob detection algorithm from scratch,
  there are many open source implementations for this algorithm and in this
- thesis we use the version provided in opencv.
- 
+ thesis we use the version provided by OpenCV.
+ Here are the decision rules we used to classify dot color using RGB values:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if R > 255 and B < 25 and G < 25:
+\end_layout
+
+\begin_layout Plain Layout
+
+	then red
+\end_layout
+
+\begin_layout Plain Layout
+
+elif R > 255 and B > 255 and G < 25:
+\end_layout
+
+\begin_layout Plain Layout
+
+	then magenta
+\end_layout
+
+\begin_layout Plain Layout
+
+elif R < 75 and B < 50 and 150 < G < 200:
+\end_layout
+
+\begin_layout Plain Layout
+
+	then green
+\end_layout
+
+\begin_layout Plain Layout
+
+elif R < 75 and 150 < B < 200 and G < 75:
+\end_layout
+
+\begin_layout Plain Layout
+
+	then blue
+\end_layout
+
+\begin_layout Plain Layout
+
+elif 60 < R < 120 and B < 50 and G < 75:
+\end_layout
+
+\begin_layout Plain Layout
+
+	then brown
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Dot color classification
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -300,12 +413,12 @@ Target Map Construction
 \end_layout
 
 \begin_layout Standard
-In order to make Count-ception architecture work, we need to construct the
- target map manually.
+In order to calculate ke Count-ception architecture work, we need to construct
+ the target map manually.
  After we get the coordinate for each sea lion, we can construct a virtual
  image indicating positions of each sea lion.
  The virtual image has the same dimension as the original image and has
- 255 pixel value at each sea lion coordinate, all the other pixel values
+ 255 pixel value at each sea lion postition, all the other pixel values
  are zero.
  
 \end_layout
@@ -314,48 +427,19 @@ In order to make Count-ception architecture work, we need to construct the
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename images/0_cell2.png
-	lyxscale 10
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Original Image
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
-\align center
 \begin_inset Graphics
-	filename images/0_dot2.png
+	filename images/0_cell2.png
 	lyxscale 10
+	width 45text%
 
 \end_inset
 
@@ -366,7 +450,59 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Virtual Image
+Original image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/0_dot2.png
+	lyxscale 10
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Virtual image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Preprocessed image
 \end_layout
 
 \end_inset
@@ -385,16 +521,15 @@ Virtual Image
 
 \begin_layout Standard
 As mentioned before, target map network is a simple CNN architecture with
- one convolution layer.
- The target construction network is used on the virtual image in order to
- get the target map which is a heat map indicating positive object area.
+ one convolution layer and it is used on the virtual image in order to get
+ the activation map which is a heat map indicating positive object area.
  The convolution operation is implemented by pad zero and stride one and
  the filter is filled with ones.
  When we convolve the filter with the virtual image, we will get a positive
  value if the object dot is inside the filter, otherwise we will get a zero.
  Let us see an example, we have a virtual image of size 120x120 and there
  is an object dot at center of the image.
- After convolution, the virtual image turns into target map.
+ After convolution, the virtual image turns into activation map.
  
 \end_layout
 
@@ -405,9 +540,15 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/virtual_image.png
+	width 20text%
 
 \end_inset
 
@@ -429,18 +570,15 @@ Virtual image
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
 \begin_inset Graphics
 	filename images/activation_map.png
+	width 20text%
 
 \end_inset
 
@@ -451,7 +589,28 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Target map
+Activation map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Receptive field
 \end_layout
 
 \end_inset
@@ -473,11 +632,74 @@ Recall that in the labeled images, we have a colored dot at the center of
  each sea lion and when we design the target map network, we need to pay
  attention to the filter size.
  We call the filter is activated when we get a positive output.
+ In the example above, the filter size is 48x48 and it is activated when
+ the red dot hits the right bottom corner of the filter.
+ It is easy to see that the activation area in the virtual image is twice
+ the size of the filter minus one, as illustrated in figure 4.7.
+ When we try to design the filter size, we need to keep in mind that the
+ object should lie inside the activation area.
+ Note that the original image and virtual image has the same size.
+ In Steller sea lion dataset, the largest type of sea lion is the adult
+ male which is around 96x96 pixels, so we can make the filter size equals
+ to 48.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/filter.png
+	lyxscale 10
+	width 30text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Activation area
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Data Augmentation 
+\end_layout
+
+\begin_layout Standard
+Data augmentation is a common technique used to improve the performance
+ of neural networks.
+ Overfitting is a challenge for deep learning models due to insufficient
+ amount of data and complex network structures.
+ We can not simplify the deep learning architecture when we have a non trivial
+ problem but we can increase the training data by data augmentation.
+ Given an input image, we can rotate, flip and zoom it to enrich our dataset.
+ In Steller sea lion dataset, we use data augmentation to balance the sea
+ lion types and improve classification performance.
+ 
 \end_layout
 
 \end_body
