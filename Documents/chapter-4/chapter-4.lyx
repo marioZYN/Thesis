@@ -84,21 +84,21 @@ Steller Sea Lion Dataset
 \end_layout
 
 \begin_layout Standard
-The goal of Steller Sea Lion Count competition is to estimate each type
- of sea lion in each one of test images.
+The goal of Steller Sea Lion Count competition is to estimate the number
+ of each type of sea lions in a given image.
  The different types of sea lions are: adult males, subadult males, adult
  females, and pups.
  There are totally 947 training images and 18639 testing images.
  For each training image, we have two versions: the original one and the
  one with colored dots in the center of each sea lion.
  Different images may have different sizes but all the sizes are around
- 4500x3000x3, thus the image is quite large occupying around 5MB space.
+ 4500 x 3000 x 3, thus the image is quite large occupying around 5MB space.
  The large amount of high resolution images brings us two major problems.
  First, during training we need to deal with memory consumption and we may
  need to split the image into patches or resize the image in order to fit
  them into GPU's memory.
  Second, in the testing phase, we need to have short inference time due
- to huge amount testing images.
+ to the huge amount testing images.
  In figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -239,8 +239,18 @@ As we can see in the figure, there are some black regions in the labeled
  different images.
  We can have an image containing more than 900 sea lions or an image containing
  only 3.
- Also it is not an uniform distribution for different sea lion types.
- Here is a summary of sea lion type distribution in the whole training dataset:
+ Also it is not a uniform distribution for different sea lion types.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-types"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+is a summary of sea lion type distribution in the whole training dataset:
 \end_layout
 
 \begin_layout Standard
@@ -265,6 +275,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-types"
+
+\end_inset
+
 Sea lion types distribution
 \end_layout
 
@@ -288,7 +304,9 @@ g.
  First of all, we use blob detection to get the color of each centered dot
  and its coordinates.
  Then we can use these coordinates to construct dot labeled inputs which
- are used in Count-ception architecture.
+ are required in Count-ception architecture.
+ In order to deal with GPU memory consumption, we exploit two methods: image
+ scaling and separation.
  Data augmentation is used to balance sea lion types and improve classification
  performance.
  
@@ -415,8 +433,8 @@ Target Map Construction
 \begin_layout Standard
 In order to calculate the loss for Count-ception architecture, we need to
  construct the target map manually.
- After we get the coordinate for each sea lion, we can construct a dot label
- image indicating positions of each sea lion.
+ After we get the coordinates for each sea lion, we can construct a dot
+ label image indicating positions of each sea lion.
  This dot image has the same dimension as the original image and has 255
  pixel value at each sea lion position while all the other pixel values
  are zero.
@@ -502,7 +520,7 @@ dot labeled image
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Preprocessed images
+Pre-processed images
 \end_layout
 
 \end_inset
@@ -515,187 +533,67 @@ Preprocessed images
 
 \end_layout
 
-\begin_layout Standard
-As mentioned before, target map construction is performing convolution operation
- across the dot image.
- When we convolve the filter with it, we will get a positive value if the
- object dot is inside the filter, otherwise we will get a zero.
- So each dot in the input image turns into a square region in the target
- map where the pixel values in this regions are all one.
+\begin_layout Subsection
+Image resizing and separation
 \end_layout
 
 \begin_layout Standard
-Let us see an example, we have a virtual image of size 120x120 and there
- is an object dot at center of the image.
- After convolution, the dot image turns into a target map.
+The original sea lion image has quite high resolution and it can consume
+ too much memory.
+ When we train our neural network with GPU, we not only need to load the
+ image, but also need to store the parameters and all the intermediate values
+ which are used to calculate gradients in back propagation.
+ In order to deal with this memory issue, we mainly exploit image scaling
+ and separation.
  
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/virtual_image.png
-	width 20text%
-
-\end_inset
-
-
+In computer graphics and digital imaging, image scaling refers to the resizing
+ of a digital image.
+ When scaling a vector graphic image, the graphic primitives that make up
+ the image can be scaled using geometric transformations, with no loss of
+ image quality.
+ When scaling a raster graphics image, a new image with a higher or lower
+ number of pixels must be generated.
+ In case of decreasing the pixel number this usually results in a visible
+ quality loss.
+ There are quite some image rescaling algorithms, like Nearest-neighbor
+ interpolation, bilinear and bicubic algorithm, and etc.
+ The details of these algorithms are not our concern in this thesis, we
+ are more interested in the downsampling effect.
+ The sea lion images are raster graphics and we half the its size to reduce
+ memory consumption.
+ As a result we lose some pixel information and everything becomes smaller.
+ There are mainly two effects:
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Dot image
+\begin_layout Itemize
+By losing some pixel values, the information left may not be sufficient
+ to distinguish each sea lion type.
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/activation_map.png
-	width 20text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Target map
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Receptive field
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Recall that in the labeled images, we have a colored dot at the center of
- each sea lion and when we design the target construction convolution, we
- need to pay attention to the filter size.
- We call the filter is activated when we get a positive output.
- In the example above, the filter size is 48x48 and it is not activated
- until the dot label hits the right bottom corner of the filter.
- It is easy to see that the activation area in the dot image is twice the
- size of the filter minus one, as illustrated in figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Activation-area"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- When we try to design the filter size, we need to keep in mind that the
- object should lie inside the activation area.
- In Steller sea lion dataset, the largest type of sea lion is the adult
- male which is around 96x96 pixels, so we can make the filter size equals
- to 48.
+\begin_layout Itemize
+When we downsample the image, everything becomes smaller and thus we need
+ re-design the receptive field size in order to better fit each sea lion.
  
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename images/filter.png
-	lyxscale 10
-	width 30text%
-
-\end_inset
-
-
+Another method to deal with memory consumption is to separate each image
+ into patches and then process each patch to sum up the counts as the final
+ result.
+ By using this method, we do not lose pixel values and each object does
+ not shrink.
+ However, when we generate patches using a non-overlapping sliding window,
+ we may cut off some objects and this can hurt performance.
+ 
 \end_layout
 
-\begin_layout Plain Layout
-\align center
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Activation-area"
-
-\end_inset
-
-Activation area
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
+\begin_layout Standard
+In a word, both image scaling and separation have disadvantages and in fact
+ using these two methods is just a compromise due to the limited memory
+ of GPU.
 \end_layout
 
 \begin_layout Subsection

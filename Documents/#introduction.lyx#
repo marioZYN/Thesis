@@ -115,7 +115,7 @@ Since Alex re-introduced CNN architecture into computer vision field, deep
  In order to do this, the training data needs to have both the labels and
  the bounding boxes indicating the object location.
  This kind of dataset requires large amount of time for human labelers and
- thus is more difficult to construct.
+ thus it is more difficult to construct.
  Segmentation algorithm requires pixel-leveled prediction for each object
  and constructing this kind of training set is tedious.
  
@@ -134,12 +134,13 @@ The purpose for this thesis is to develop an algorithm for simultaneous
  counts for cells and tissues, helping doctors to analyze the disease.
  Moreover, the training dataset is a lot easier to construct: we only need
  to have a labeled dot for each object, no bounding boxes are required.
- This kind of dataset is more common than bounding box labeled 
+ This kind of dataset is more common than bounding box labeled or pixel-level
+ labeled dataset.
 \end_layout
 
 \begin_layout Standard
 In the thesis, we use the sea lions dataset provided by NOAA Kaggle Competition
- and build a fully convolutional network based on Count-Ception Architecture
+ and build a fully convolutional network based on Count-ception Architecture
  introduced in 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -149,22 +150,24 @@ literal "false"
 \end_inset
 
 .
- The thesis is structured as follows:
+ The thesis is structured as:
 \end_layout
 
 \begin_layout Itemize
-In Chapter 1, we briefly talk about image classification, detection and
- localization algorithms.
+In Chapter 1, we briefly talk about deep learning algorithms in computer
+ vision field, including image classification, detection and localization
+ algorithms.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 2, Count-ception Architecture is introduced.
+In Chapter 2, we introduce Count-ception architecture and explain why it
+ can solve object counting problems.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 3, our algorithm is discussed, doing object classification and
+In Chapter 3, we present our major contribution which is a modified version
+ of Count-ception architecture, able to perform object classification and
  counting at the same time.
- 
 \end_layout
 
 \begin_layout Itemize

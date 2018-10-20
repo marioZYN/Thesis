@@ -134,8 +134,8 @@ The purpose for this thesis is to develop an algorithm for simultaneous
  counts for cells and tissues, helping doctors to analyze the disease.
  Moreover, the training dataset is a lot easier to construct: we only need
  to have a labeled dot for each object, no bounding boxes are required.
- This kind of dataset is more common than bounding box labeled or pixel-leveled
- dataset.
+ This kind of dataset is more common than bounding box labeled or pixel-level
+ labeled dataset.
 \end_layout
 
 \begin_layout Standard

@@ -80,19 +80,824 @@
 \begin_body
 
 \begin_layout Standard
-In this chapter, we talk about how to do object counting with sliding window
- and image classification approach.
+In this chapter, we will present our major contribution which is a modified
+ version of Count-ception architecture, able to do classification and counting
+ at the same time.
  
 \end_layout
 
 \begin_layout Section
-Problem formation
+Architecture Overview
 \end_layout
 
 \begin_layout Standard
-We have a set of images and each of them contains objects of different types,
- and we want to predict the object counts for each one of them.
+Before we introduce our network, let's first briefly review the original
+ Count-ception architecture.
+ As illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Count-ception-Architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, each 32 x 32 area in the original image produces one output value.
+ The whole architecture is a fully convolutional network, and each basic
+ element is an Inception module stacking two sizes of filters.
+ By doing convolution, Count-ception architecture can generate a prediction
+ map which is used together with the target map to calculate the loss.
+ The original Count-ception architecture is used to count objects in the
+ image, but it can not do classification, so only one kind of objects can
+ exist in each input image.
+ Also the dataset used in Count-ception paper is easier to analyze compared
+ to our sea lion dataset.
+ They used medical cell images which have very simple background environment
+ (black) and each image is not large, with 256 x 256 x 3 pixels occupying
+ only about 100KB.
+ Our sea lion dataset, however, has far more complex background, including
+ sea, grass, and rocks, thus containing more noise.
+ Also the image has quite high resolution, around 3000 x 4000 x 3 each,
+ occupying around 5MB.
+ A comparison between their cell image and our sea lion image is shown in
+ figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Dataset-comparison"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/003cell.png
+	lyxscale 39
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Cell image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/sea lion image.jpg
+	lyxscale 10
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Sea lion image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Dataset-comparison"
+
+\end_inset
+
+Dataset comparison
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The modified version of Count-ception architecture is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modified-Count-ception-architect"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, and the main changes are the following:
+\end_layout
+
+\begin_layout Itemize
+Input patch receptive filed is changed from 32 x 32 to 48 x 48 by increasing
+ the first convolution filter size to 19 x 19 x 64.
+\end_layout
+
+\begin_layout Itemize
+The output is changed from 1 x 1 x 1 to 1 x 1 x 5 by increasing the number
+ of channels in the last convolution filter.
+\end_layout
+
+\begin_layout Standard
+These modifications are made in order to make the network work for our sea
+ lion dataset and integrate classification functionality.
+ The reason behind it and some design decisions are discussed in the next
+ section.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/my architecture.png
+	lyxscale 40
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modified-Count-ception-architect"
+
+\end_inset
+
+Modified Count-ception architecture
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Design Decisions
+\end_layout
+
+\begin_layout Standard
+In the development of this thesis, we encountered some challenges due to
+ the inherent difficulty of the sea lion dataset.
+ In order to exploit Count-ception architecture for simultaneously object
+ classification and counting, we did a few experiments and some major considerat
+ions are discussed below.
+\end_layout
+
+\begin_layout Subsection
+Classification
+\end_layout
+
+\begin_layout Standard
+Recall that the original Count-ception architecture is used to generate
+ a counting number for only one kind of object, and that's why we get a
+ 1 x 1 x 1 tensor as the output value.
+ But now we can have multiple types of objects in each image, and we would
+ like to generate a counting number for each type of them.
+ One straightforward way to do it is to add more channels in the last convolutio
+n layer, so that we can generate more outputs.
+ As we can see in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modified-Count-ception-architect"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, we have five convolution filters in the last layer while in the original
+ Count-ception network we only have one.
+ It is obvious that by increasing the number of filters, we can get more
+ output values.
+ The question is: Does it make sense?
+\end_layout
+
+\begin_layout Standard
+To answer this question, let's examine the network architecture in more
+ detail.
+ Recall that Count-ception architecture is fully convolutional, meaning
+ that there are no fully connected layers in this network.
+ The fully connected layers are all converted into convolution layers, as
+ the last two green blocks in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modified-Count-ception-architect"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows.
+ If we convert them back and look at the network in fully connected way,
+ we will see that adding more convolution filters is equivalent to adding
+ more neurons.
+ When we do multi-class classification with CNN architecture, the number
+ of neurons in the last layer is equal to the number of classes we want
+ to distinguish.
+ So it is reasonable to directly add more convolution filters to do classificati
+on.
+ Also note that when we use Count-ception architecture to convolve with
+ an input image, we will get a heat map as output.
+ Now with 5 filters in the last layer, we will get five heat maps, one for
+ each type of sea lion.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/CNN1.png
+	lyxscale 70
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Binary classification
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/CNN3.png
+	lyxscale 70
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+multi-class classification
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+CNN classification
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Receptive field and activation area
+\end_layout
+
+\begin_layout Standard
+The receptive field is defined as the region in the input space that a particula
+r CNN's feature is looking at.
+ More specifically it defines the local area of the input which generates
+ a single pixel value in the output.
+ The receptive filed in the original Count-ception architecture is 32 x
+ 32 and we increase it to 48 x 48, because we want it to fit our sea lions.
+ Count-ception architecture is a small network that is run over the image
+ to produce an intermediate count map, and it is trained to count the number
+ of objects in its receptive field 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/CohenLB17"
+literal "false"
+
+\end_inset
+
+.
+ So should we design the network to make the receptive filed large enough
+ to cover each object? Not really.
+ Actually we need to design the network to make the "activation area" able
+ to cover a single object, not necessarily the receptive field.
+ We define the activation area as the local region in the dot label image
+ which produces a positive value in the output.
+ In paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/CohenLB17"
+literal "false"
+
+\end_inset
+
+, the authors didn't mention activation area because the objects in their
+ cell images are already smaller than the receptive field (32 x 32).
+ However in our experiment with the sea lion dataset, we find that using
+ 32 x 32 receptive field gives bad performance, because the activation area
+ is not large enough to cover each sea lion.
+ 
+\end_layout
+
+\begin_layout Standard
+Recall that the dot label images are all black except the dots indicating
+ object centers, and by using convolution we can generate a target map which
+ is our learning objective.
+ Since we are doing convolution with square filters and stride one, the
+ positive values in the target map are in the form of squares too and each
+ square has the same size as the receptive field, as illustrated in figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Dot-label-image"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/dot2target.png
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Dot-label-image"
+
+\end_inset
+
+Dot label image to target map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we analyze the convolution operation step by step, we will see that each
+ dot label will produce a positive output only when it is inside the filter.
+ When the dot labels are at the corners of the filter, we have the activation
+ area boundary.
+ So the relationship between the activation area 
+\begin_inset Formula $A$
+\end_inset
+
+ and filter size 
+\begin_inset Formula $F$
+\end_inset
+
+ is calculated by
+\begin_inset Formula $A=2\times F-1$
+\end_inset
+
+.
+ Also note that the filter size is equal to the receptive filed of Count-ception
+ architecture, so the activation area is almost twice the size of the receptive
+ filed.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/filter.png
+	lyxscale 30
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Activation-area-1"
+
+\end_inset
+
+Activation area
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As long as the activation area is larger than the object size, we are OK
+ to proceed with the training process.
+ Of course, we can also design the network to make the receptive field larger
+ than the object size, however it will require more parameters to learn.
+ The largest type of sea lion is the adult male which is around 96 x 96,
+ so we decide to make the receptive field equal to 48 x 48.
+\end_layout
+
+\begin_layout Subsection
+Weight balance layer
+\end_layout
+
+\begin_layout Standard
+Count-ception network is convolved with the input image to generate a prediction
+ map, and this prediction map together with the target map are used to calculate
+ the L1 loss.
+ Note that here we are calculating L1 loss with a matrix, and if we expand
+ this formula into pixel values, we will see that the overall loss is the
+ summation of each individual pixel loss.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+loss=||P-T||_{1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+loss=\sum_{x,y}||P_{x,y}-T_{x,y}||_{1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By expanding the loss function, we see that doing stochastic training with
+ fully convolutional network is equivalent to do batch-wise training with
+ normal CNN.
+ So training Count-ception network directly with output maps has the same
+ performance compared to do training with manually extracted patches and
+ corresponding target values, as illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Batch-wise-training"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/batch-wise.png
+	lyxscale 30
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Batch-wise-training"
+
+\end_inset
+
+Batch-wise training
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So what will happen if our target map has a low density (having very few
+ positive areas), like the target map in figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Batch-wise-training"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+? If we view the training phase batch-wise, we'll see that there are a lot
+ more negative patches (contain no object) than positive patches in our
+ mini-batch.
+ If we train our network with this unbalanced distribution training samples,
+ our network will learn to always produce zero in order to minimize the
+ loss.
+ 
+\end_layout
+
+\begin_layout Standard
+Actually having unbalanced dataset is a common issue in machine learning
+ and deep learning area, and there are basically three ways to deal with
+ it:
+\end_layout
+
+\begin_layout Enumerate
+Upsample the minor class to enrich the dataset.
+\end_layout
+
+\begin_layout Enumerate
+Downsample the major class.
+\end_layout
+
+\begin_layout Enumerate
+Modify the loss function to give more weights to the minor class.
+\end_layout
+
+\begin_layout Standard
+Here we adopt the third approach, because we have multiple objects in each
+ image and thus it is not an easy task to modify the image and balance objects.
+ In order to balance the loss function, we insert a weight balance layer
+ 
+\begin_inset Formula $L$
+\end_inset
+
+ into our network and the loss function is changed to:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+loss=||P\times L-T\times L||_{1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The weight balance layer has the same dimension as the prediction map, and
+ it is doing element-wise product with both the prediction map and the target
+ map.
+ The weight balance layer contains all ones except the positive output area
+ in the target map which will have pixel value w (w>1).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/weight balance layer.png
+	lyxscale 40
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Weight balance layer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+W can be chosen manually by ourselves or we can use the following formula
+ to make positive and negative patches equal weights.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+w=\frac{width_{T}\times height_{T}-sum(T)}{sum(T)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We invent the weight balance layer in order to deal with low density target
+ map issue, and the experiment results show that it is necessary if we want
+ to produce positive counting numbers..
 \end_layout
 
 \end_body
