@@ -119,7 +119,7 @@ Patch extraction and training set construction
 
 \begin_layout Standard
 We already have each sea lion coordinates by using blob detection introduced
- in chapter 
+ in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "chap:fourth-chapter"

@@ -165,7 +165,7 @@ In Chapter 2, we introduce Count-ception architecture and explain why it
 \end_layout
 
 \begin_layout Itemize
-In Chapter 3, we discuss about our algorithm which is a modified version
+In Chapter 3, we present our major contribution which is a modified version
  of Count-ception architecture, able to perform object classification and
  counting at the same time.
 \end_layout
@@ -179,11 +179,7 @@ In Chapter 5, algorithm performance is analyzed.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 6, conclusions are provided.
-\end_layout
-
-\begin_layout Itemize
-In Chapter 7, issues and further improvements are discussed.
+In Chapter 6, conclusions and further improvements are provided.
 \end_layout
 
 \end_body

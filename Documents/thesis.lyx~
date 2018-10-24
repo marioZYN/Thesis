@@ -68,6 +68,8 @@
 \paperfontsize 11
 \spacing onehalf
 \use_hyperref true
+\pdf_title "Obejct classification and counting with Count-ception network"
+\pdf_author "ZHOU YINAN"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -129,7 +131,7 @@
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 This template is the result of collecting a lot of resources about how to
@@ -416,35 +418,7 @@ filename "abstract.lyx"
 
 \end_layout
 
-\begin_layout Chapter*
-Sommario
-\end_layout
-
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-thispagestyle{empty}
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset include
-LatexCommand input
-filename "sommario.lyx"
-
-\end_inset
-
-
-\begin_inset Newpage clearpage
-\end_inset
-
-
 \begin_inset ERT
 status open
 
@@ -584,7 +558,7 @@ filename "introduction.lyx"
 \end_layout
 
 \begin_layout Chapter
-Deep learning methods in computer vision
+Deep Learning Methods In Computer Vision
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:first-chapter"
@@ -605,7 +579,7 @@ filename "chapter-1/chapter-1.lyx"
 \end_layout
 
 \begin_layout Chapter
-Count-ception
+Count-ception Architecture
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:second-chapter"
@@ -626,7 +600,7 @@ filename "chapter-2/chapter-2.lyx"
 \end_layout
 
 \begin_layout Chapter
-Third chapter
+Count-ception with Classification
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:third-chapter"
@@ -647,7 +621,7 @@ filename "chapter-3/chapter-3.lyx"
 \end_layout
 
 \begin_layout Chapter
-Fourth chapter
+Dataset Construction and Preprocessing
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:fourth-chapter"
@@ -668,7 +642,7 @@ filename "chapter-4/chapter-4.lyx"
 \end_layout
 
 \begin_layout Chapter
-Fifth chapter
+Performance Analysis
 \begin_inset CommandInset label
 LatexCommand label
 name "chap:fifth-chapter"
@@ -682,90 +656,6 @@ name "chap:fifth-chapter"
 \begin_inset CommandInset include
 LatexCommand input
 filename "chapter-5/chapter-5.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Sixth chapter
-\begin_inset CommandInset label
-LatexCommand label
-name "chap:sixth-chapter"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "chapter-6/chapter-6.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Seventh chapter
-\begin_inset CommandInset label
-LatexCommand label
-name "chap:seventh-chapter"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "chapter-7/chapter-7.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Eighth chapter
-\begin_inset CommandInset label
-LatexCommand label
-name "chap:eighth-chapter"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "chapter-8/chapter-8.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Ninth chapter
-\begin_inset CommandInset label
-LatexCommand label
-name "chap:ninth-chapter"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "chapter-9/chapter-9.lyx"
 
 \end_inset
 
@@ -834,68 +724,7 @@ addcontentsline{toc}{chapter}{Bibliography}
 
 \end_layout
 
-\begin_layout Chapter
-\start_of_appendix
-First appendix
-\begin_inset CommandInset label
-LatexCommand label
-name "app:first-appendix"
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "appendix-a/appendix-a.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Second appendix
-\begin_inset CommandInset label
-LatexCommand label
-name "app:second-appendix"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "appendix-b/appendix-b.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Third appendix
-\begin_inset CommandInset label
-LatexCommand label
-name "app:third-appendix"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "appendix-c/appendix-c.lyx"
-
-\end_inset
-
-
 \begin_inset Newpage clearpage
 \end_inset
 

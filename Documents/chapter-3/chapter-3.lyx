@@ -136,11 +136,13 @@ noprefix "false"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Float figure
 wide false
 sideways false
@@ -150,7 +152,7 @@ status open
 \begin_inset Graphics
 	filename images/003cell.png
 	lyxscale 39
-	width 40text%
+	width 20text%
 
 \end_inset
 
@@ -181,7 +183,7 @@ status open
 \begin_inset Graphics
 	filename images/sea lion image.jpg
 	lyxscale 10
-	width 40text%
+	width 60text%
 
 \end_inset
 
@@ -269,6 +271,7 @@ These modifications are made in order to make the network work for our sea
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -387,11 +390,13 @@ on.
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Float figure
 wide false
 sideways false
@@ -401,7 +406,7 @@ status open
 \begin_inset Graphics
 	filename images/CNN1.png
 	lyxscale 70
-	width 60text%
+	width 45text%
 
 \end_inset
 
@@ -423,9 +428,6 @@ Binary classification
 \end_inset
 
 
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Float figure
 wide false
 sideways false
@@ -435,7 +437,7 @@ status open
 \begin_inset Graphics
 	filename images/CNN3.png
 	lyxscale 70
-	width 60text%
+	width 45text%
 
 \end_inset
 
@@ -551,6 +553,7 @@ noprefix "false"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -559,7 +562,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/dot2target.png
-	width 60text%
+	width 80text%
 
 \end_inset
 
@@ -619,6 +622,7 @@ If we analyze the convolution operation step by step, we will see that each
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -628,7 +632,7 @@ status open
 \begin_inset Graphics
 	filename images/filter.png
 	lyxscale 30
-	width 60text%
+	width 40text%
 
 \end_inset
 
@@ -650,10 +654,6 @@ Activation area
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -728,15 +728,17 @@ noprefix "false"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename images/batch-wise.png
 	lyxscale 30
-	width 60text%
+	width 80text%
 
 \end_inset
 
@@ -772,7 +774,7 @@ Batch-wise training
 
 \begin_layout Standard
 So what will happen if our target map has a low density (having very few
- positive areas), like the target map in figure
+ positive areas), like the target map in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Batch-wise-training"
@@ -785,7 +787,7 @@ noprefix "false"
 ? If we view the training phase batch-wise, we'll see that there are a lot
  more negative patches (contain no object) than positive patches in our
  mini-batch.
- If we train our network with this unbalanced distribution training samples,
+ If we train our network with this unbalanced distributed training samples,
  our network will learn to always produce zero in order to minimize the
  loss.
  
@@ -842,11 +844,13 @@ The weight balance layer has the same dimension as the prediction map, and
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename images/weight balance layer.png
 	lyxscale 40
@@ -880,7 +884,7 @@ Weight balance layer
 
 \begin_layout Standard
 W can be chosen manually by ourselves or we can use the following formula
- to make positive and negative patches equal weights.
+ to make positive and negative patches equal weighted.
 \end_layout
 
 \begin_layout Standard

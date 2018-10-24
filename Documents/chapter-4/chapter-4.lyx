@@ -87,7 +87,7 @@ Steller Sea Lion Dataset
 The goal of Steller Sea Lion Count competition is to estimate the number
  of each type of sea lions in a given image.
  The different types of sea lions are: adult males, subadult males, adult
- females, and pups.
+ females, juveniles and pups.
  There are totally 947 training images and 18639 testing images.
  For each training image, we have two versions: the original one and the
  one with colored dots in the center of each sea lion.
@@ -250,7 +250,7 @@ noprefix "false"
 
 \end_inset
 
-is a summary of sea lion type distribution in the whole training dataset:
+ is a summary of sea lion type distribution in the whole training dataset.
 \end_layout
 
 \begin_layout Standard
@@ -292,6 +292,14 @@ Sea lion types distribution
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+In our experiments, we construct our own testing set from the 947 training
+ images.
+ More specifically, all the images with id 750 – 947 are used as test set
+ which are never been seen in the training phase.
+ These testing images are used as the indicator of algorithm performance.
 \end_layout
 
 \begin_layout Section
@@ -341,9 +349,10 @@ A dot in labeled images is a blob which contains the similar pixel values
 
 \begin_layout Standard
 \begin_inset Float algorithm
+placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset listings
@@ -438,14 +447,16 @@ In order to calculate the loss for Count-ception architecture, we need to
  This dot image has the same dimension as the original image and has 255
  pixel value at each sea lion position while all the other pixel values
  are zero.
+ Padding is used to deal with sea lions near the boarder.
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Float figure
