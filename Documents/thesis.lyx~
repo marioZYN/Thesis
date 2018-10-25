@@ -68,7 +68,7 @@
 \paperfontsize 11
 \spacing onehalf
 \use_hyperref true
-\pdf_title "Obejct classification and counting with Count-ception network"
+\pdf_title "{Object Classification and Counting with Count-ception Network"
 \pdf_author "ZHOU YINAN"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
@@ -120,7 +120,7 @@
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
-\tracking_changes false
+\tracking_changes true
 \output_changes false
 \html_math_output 0
 \html_css_as_file 0

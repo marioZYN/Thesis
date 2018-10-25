@@ -114,7 +114,7 @@ Since Alex re-introduced CNN architecture into computer vision field, deep
  around each object in the image.
  In order to do this, the training data needs to have both the labels and
  the bounding boxes indicating the object location.
- This kind of dataset requires large amount of time for human labelers and
+ This kind of dataset occupies large amount of time of human labelers and
  thus it is more difficult to construct.
  Segmentation algorithm requires pixel-leveled prediction for each object
  and constructing this kind of training set is tedious.
@@ -139,9 +139,53 @@ The purpose for this thesis is to develop an algorithm for simultaneous
 \end_layout
 
 \begin_layout Standard
-In the thesis, we use the sea lions dataset provided by NOAA Kaggle Competition
- and build a fully convolutional network based on Count-ception Architecture
- introduced in 
+The main challenge for this thesis is the inherent difficulty of our sea
+ lion images which have small and similar objects but complex background
+ environment.
+ Each image has quite high resolution which makes it difficult for managing
+ algorithm speed and memory consumption.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 55.jpg
+	lyxscale 10
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Sea lion image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to solve this multi-objects counting problem, we start by doing
+ some literature review about current state-of-art object detection algorithms.
+ From the past papers, we discovered Count-ception architecture
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/CohenLB17"
@@ -149,7 +193,22 @@ literal "false"
 
 \end_inset
 
+ and fully convolutional mechanism
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/pami/ShelhamerLD17"
+literal "false"
+
+\end_inset
+
 .
+ Based on them, we designed our algorithm.
+ 
+\end_layout
+
+\begin_layout Standard
+In the thesis, we use the sea lions dataset provided by NOAA Kaggle Competition
+ and build a fully convolutional network based on Count-ception Architecture.
  The thesis is structured as:
 \end_layout
 
