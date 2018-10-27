@@ -111,8 +111,8 @@ y object classification and counting, and testify it on the sea lion dataset
  provided by NOAA.
  Since the sea lion dataset is inherently difficult with complex backgrounds
  and very similar objects, we can foresee that our algorithm can be applied
- for many other problems as well, including biology, remote sensing, surveillanc
-e, and etc.
+ for many other problems as well ], including biology, remote sensing, surveilla
+nce, and etc.
  
 \end_layout
 

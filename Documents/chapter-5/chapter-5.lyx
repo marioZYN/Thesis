@@ -353,7 +353,7 @@ e is summarized in the following table:
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -528,7 +528,7 @@ Baseline testing performance
 
 \begin_layout Standard
 We have very high counting error for juveniles and pups and there are mainly
- two reasons:
+ two reasons for this:
 \end_layout
 
 \begin_layout Enumerate
@@ -542,9 +542,9 @@ Juveniles and pups are inherently difficult to detect because they have
 By using non-overlapping patches with classification, we assume that the
  sea lions lie at the center of each patch, and there are maximumly one
  sea lion in each patch.
- However in the images, sea lions not always lie in the patch centers and
- pups, for most of the time, lie very near to other sea lions (possibly
- their mothers).
+ However in the images, sea lions not always lie in the patch centers and,
+ pups for most of the time lie very near to other sea lions (possibly their
+ mothers).
  
 \end_layout
 
@@ -577,12 +577,193 @@ With learning rate equals to
 , the network is trained for 60 epochs under Adam optimization.
  We use 50 training images and each of them are divided into 25 non-overlapping
  patches in order to deal with GPU's memory issue.
+ One training patch example is illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Training-patch-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  Thus there are totally 1250 patches, among them 85% of them are used in
  training and the rest are used as validation dataset.
  In the testing phase, each image is first separated into 25 patches and
  then sea lion count predictions of each patch are summed up to generate
  the final result.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/training patch.png
+	lyxscale 30
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Training-patch-example"
+
+\end_inset
+
+Training patch example
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The result of sea lion binary counting is not bad, and as we can see in
+ figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-binary"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, the algorithm not only learns the sea lion positions but also sea lion
+ shapes, even though our learning objective is squares.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/target patch.png
+	lyxscale 20
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Target map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/prediction patch.png
+	lyxscale 20
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-binary"
+
+\end_inset
+
+Sea lion binary counting performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
