@@ -260,7 +260,7 @@ CNN architecture
 
 \begin_layout Standard
 The last layer in this CNN is a fully connected layer and we append a softmax
- layer after it to convert the outputs into classification scores.
+ function after it to convert the outputs into classification scores.
  
 \end_layout
 
@@ -343,7 +343,7 @@ We have a six-class classification problem with uniform data distribution
  and the accuracy we achieved after training is around 50%.
  So it is actually not bad for our CNN to classify patches.
  As mentioned before, we can get sea lion count prediction by first separating
- the whole image into patches and then sum up classification results.
+ the whole image and then sum up classification results.
  The test dataset we construct has totally 184 images and the testing performanc
 e is summarized in the following table:
 \end_layout
@@ -544,8 +544,7 @@ By using non-overlapping patches with classification, we assume that the
  sea lion in each patch.
  However in the images, sea lions not always lie in the patch centers and,
  pups for most of the time lie very near to other sea lions (possibly their
- mothers).
- 
+ mothers), so the above assumption does not hold.
 \end_layout
 
 \begin_layout Standard
@@ -600,7 +599,7 @@ noprefix "false"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -659,6 +658,7 @@ noprefix "false"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -668,7 +668,7 @@ status open
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -704,7 +704,7 @@ Target map
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -766,8 +766,146 @@ Sea lion binary counting performance
 
 \end_layout
 
+\begin_layout Standard
+In our experiments with sea lion binary classification, we discovered that
+ enlarging the receptive field size of Count-ception architecture is necessary
+ for recognizing sea lions.
+ We need to carefully design its size to cover the largest object.
+ As mentioned in chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:fourth-chapter"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, we can deal with GPU memory issue by either rescaling the image or separating
+ the image.
+ The result above is achieved by image separation, and we also tried rescaling.
+ By rescaling the image to 20% of its original size, we could feed the whole
+ image into our network.
+ However the performance is bad due to the fact that we lose a lot of detail
+ information.
+ In the end, we decide to use image separation approach to deal with memory
+ issue.
+ 
+\end_layout
+
+\begin_layout Standard
+After modifying the receptive field size of Count-ception architecture,
+ sea lion binary counting works well and the average counting error is illustrat
+ed in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-binary-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The numbers verify that the network can process images with complex backgrounds
+ and extracts patterns to generate object counts.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-binary-1"
+
+\end_inset
+
+Sea lion binary counting performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Multi-class Counting with modified Count-ception
+\end_layout
+
+\begin_layout Standard
+We generate multi-class heat maps by increasing the number of filters in
+ the last convolution layer.
+ Compared with sea lion binary counting, we are now doing five class counting
+ which requires more parameters.
+ This multi-class Count-ception architecture is a regression network which
+ outputs five pixel values from a single receptive field.
+ These values can be seen as scores for different sea lion types, for example
+ if the area in the receptive field is sea water then all the five scores
+ should be close to zero.
+ 
+\end_layout
+
+\begin_layout Standard
+During our experiments, we encountered unbalanced sea lion distribution
+ problem.
+ Unlike sea lion binary counting where we only have a single heat map, here
+ we have five heat maps and sea lions are distributed among them.
+ Due to its unbalanced distribution, some heat maps can contain a lot positive
+ pixel values (like adult_females) while others can have very few (like
+ adult_males).
+ The total loss is computed as a summation of each individual pixel loss
+ and this could lead to "always zero prediction".
+ In order to deal with this problem, we invent a weight balance layer which
+ is discussed in chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:fourth-chapter"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The whole network is trained for 60 epochs with 
+\begin_inset Formula $10^{-5}$
+\end_inset
+
+ learning rate under Adam optimization.
+ We separate each training image into 25 patches like what we did in sea
+ lion binary counting, however not all the patches are used here.
+ Even though we have weight balance layer to adjusts loss, it will not work
+ if there are no sea lions at all.
+ So we need to make sure that a patch contains at least one sea lion for
+ each type.
+ This is actually a very strict requirement and from 500 training images,
+ we can only create 195 legal patches.
+ 85% of these patches are used for training and the rest are for validation.
+ 
 \end_layout
 
 \end_body

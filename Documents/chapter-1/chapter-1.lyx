@@ -112,9 +112,9 @@ re used in computer vision.
  input image and the activation maps are stacked together to form the input
  for the next layer.
  By stacking more activation maps, we can get more abstract features.
- As the architecture becomes deeper, we may consume too much memory and
- in order to solve this problem, pooling layers are used to reduce the dimension
- of the activation maps.
+ However, as the architecture becomes deeper, we may consume too much memory
+ and in order to solve this problem, pooling layers are used to reduce the
+ dimension of the activation maps.
  There are two kinds of pooling layers: max pooling and average pooling.
  As the name states, max pooling keeps the maximum value within the filter
  and discards all the rest, while average pooling keeps the average value.
@@ -462,7 +462,9 @@ noprefix "false"
 
 .
  In the following sections, I will introduce some sate-of-art object detection
- and localization algorithms.
+ and localization algorithms and by studying them, we may get inspired of
+ how to solve multi-object counting problem.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1174,7 +1176,8 @@ RPN
 \end_layout
 
 \begin_layout Standard
-Here is a speed comparison among object detection algorithms we just introduced.
+The image below is a speed comparison among object detection algorithms
+ we just introduced.
  All these algorithms exploit the idea of the two-step approach: First generate
  region proposals from original images.
  Second use classification techniques to classify each area and use regression
