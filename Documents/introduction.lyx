@@ -185,7 +185,27 @@ Sea lion image
 \begin_layout Standard
 In order to solve this multi-objects counting problem, we start by doing
  some literature review about current state-of-art object detection algorithms.
- From the past papers, we discovered Count-ception architecture
+ More specifically, a history of faster R-CNN architectures's evolvement
+ is discussed.
+ Though in the end we didn't use object detection to solve object counting
+ problem, these discussions are helpful for understanding the challenges
+ as well as inspiring ideas.
+ In this thesis, we solve object counting in two approaches: 
+\end_layout
+
+\begin_layout Enumerate
+Convert the problem of object counting to object classification and use
+ CNN to solve it.
+\end_layout
+
+\begin_layout Enumerate
+Use CNN network directly for regression.
+ 
+\end_layout
+
+\begin_layout Standard
+Our algorithm focuses on the second approach which uses Count-ception architectu
+re
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/CohenLB17"
@@ -201,14 +221,9 @@ literal "false"
 
 \end_inset
 
-.
- Based on them, we designed our algorithm.
- 
-\end_layout
-
-\begin_layout Standard
-In the thesis, we use the sea lions dataset provided by NOAA Kaggle Competition
- and build a fully convolutional network based on Count-ception Architecture.
+ to generate counting numbers directly.
+ The first approach is used as a baseline.We use the sea lions dataset provided
+ by NOAA Kaggle Competition to run our experiments.
  The thesis is structured as:
 \end_layout
 

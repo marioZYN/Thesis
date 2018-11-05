@@ -227,7 +227,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/CNN architecture.png
-	lyxscale 30
+	lyxscale 60
 	width 60text%
 
 \end_inset
@@ -261,7 +261,7 @@ CNN architecture
 \begin_layout Standard
 The last layer in this CNN is a fully connected layer and we append a softmax
  function after it to convert the outputs into classification scores.
- 
+ The sea lion class with the highest score will be our prediction.
 \end_layout
 
 \begin_layout Subsection
@@ -539,12 +539,12 @@ Juveniles and pups are inherently difficult to detect because they have
 \end_layout
 
 \begin_layout Enumerate
-By using non-overlapping patches with classification, we assume that the
- sea lions lie at the center of each patch, and there are maximumly one
- sea lion in each patch.
- However in the images, sea lions not always lie in the patch centers and,
- pups for most of the time lie very near to other sea lions (possibly their
- mothers), so the above assumption does not hold.
+By using non-overlapping patches with classification approach, we assume
+ that the sea lions lie at the center of each patch, and there are maximumly
+ one sea lion in each patch.
+ However in the test images, sea lions not always lie in the patch centers
+ and, pups for most of the time lie very near to other sea lions (possibly
+ their mothers), so the above assumption does not hold.
 \end_layout
 
 \begin_layout Standard
@@ -783,7 +783,7 @@ noprefix "false"
 
 , we can deal with GPU memory issue by either rescaling the image or separating
  the image.
- The result above is achieved by image separation, and we also tried rescaling.
+ The result above is achieved by image separation, but we also tried rescaling.
  By rescaling the image to 20% of its original size, we could feed the whole
  image into our network.
  However the performance is bad due to the fact that we lose a lot of detail
@@ -871,13 +871,13 @@ During our experiments, we encountered unbalanced sea lion distribution
  problem.
  Unlike sea lion binary counting where we only have a single heat map, here
  we have five heat maps and sea lions are distributed among them.
- Due to its unbalanced distribution, some heat maps can contain a lot positive
+ Due to unbalanced distribution, some heat maps can contain a lot positive
  pixel values (like adult_females) while others can have very few (like
  adult_males).
  The total loss is computed as a summation of each individual pixel loss
  and this could lead to "always zero prediction".
  In order to deal with this problem, we invent a weight balance layer which
- is discussed in chapter 
+ as discussed in chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "chap:fourth-chapter"

@@ -352,7 +352,7 @@ A dot in labeled images is a blob which contains the similar pixel values
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset listings
@@ -456,7 +456,7 @@ In order to calculate the loss for Count-ception architecture, we need to
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -622,6 +622,10 @@ Data augmentation is a common technique used to improve the performance
  In Steller sea lion dataset, we use data augmentation to balance the sea
  lion types and improve classification performance.
  
+\end_layout
+
+\begin_layout Standard
+TO BE FINISHED.
 \end_layout
 
 \end_body

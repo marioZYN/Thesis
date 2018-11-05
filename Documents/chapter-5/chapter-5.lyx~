@@ -227,7 +227,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/CNN architecture.png
-	lyxscale 30
+	lyxscale 60
 	width 60text%
 
 \end_inset
@@ -261,7 +261,7 @@ CNN architecture
 \begin_layout Standard
 The last layer in this CNN is a fully connected layer and we append a softmax
  function after it to convert the outputs into classification scores.
- 
+ The sea lion class with the highest score will be our prediction.
 \end_layout
 
 \begin_layout Subsection
@@ -539,12 +539,12 @@ Juveniles and pups are inherently difficult to detect because they have
 \end_layout
 
 \begin_layout Enumerate
-By using non-overlapping patches with classification, we assume that the
- sea lions lie at the center of each patch, and there are maximumly one
- sea lion in each patch.
- However in the images, sea lions not always lie in the patch centers and,
- pups for most of the time lie very near to other sea lions (possibly their
- mothers), so the above assumption does not hold.
+By using non-overlapping patches with classification approach, we assume
+ that the sea lions lie at the center of each patch, and there are maximumly
+ one sea lion in each patch.
+ However in the test images, sea lions not always lie in the patch centers
+ and, pups for most of the time lie very near to other sea lions (possibly
+ their mothers), so the above assumption does not hold.
 \end_layout
 
 \begin_layout Standard
@@ -795,8 +795,8 @@ noprefix "false"
 
 \begin_layout Standard
 After modifying the receptive field size of Count-ception architecture,
- sea lion binary classification works well and the average counting error
- is illustrated in figure 
+ sea lion binary counting works well and the average counting error is illustrat
+ed in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Sea-lion-binary-1"
