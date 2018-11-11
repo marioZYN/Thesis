@@ -251,7 +251,7 @@ status open
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -289,7 +289,7 @@ Inception module, naive version
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -455,7 +455,7 @@ In fact, passing tensors through fully connected layers can be seen as a
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -491,13 +491,13 @@ Normal CNN architecture
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename images/FCNN.png
-	lyxscale 30
+	lyxscale 50
 	width 80text%
 
 \end_inset
@@ -528,7 +528,7 @@ Do not stretch the 2 x 2 x 256 tensor, instead keep the dimension.
 \end_layout
 
 \begin_layout Enumerate
-Build 128 filters, each filter is a tensor of 2x2x256.
+Build 128 filters, each filter is a tensor of 2 x 2 x 256.
  Passing 1024 length vector through fully connected layers can be seen as
  doing convolution with no padding and stride one.
 \end_layout
@@ -841,7 +841,7 @@ After we have trained the Count-ception network, we can calculate the prediction
  We can adjust the object counts using the following formula.
  F(I) stands for the prediction map, and r is the receptive field size.
  In the example above, the receptive field of one pixel in the output is
- 32 x d32, so r equals 32.
+ 32 x 32, so r equals 32.
  Each pixel in the input image is counted 32x32 times.
  
 \begin_inset Formula 

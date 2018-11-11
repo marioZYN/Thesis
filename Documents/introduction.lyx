@@ -185,7 +185,7 @@ Sea lion image
 \begin_layout Standard
 In order to solve this multi-objects counting problem, we start by doing
  some literature review about current state-of-art object detection algorithms.
- More specifically, a history of faster R-CNN architectures's evolvement
+ More specifically, a history of the evolvement of faster R-CNN architectures
  is discussed.
  Though in the end we didn't use object detection to solve object counting
  problem, these discussions are helpful for understanding the challenges
@@ -199,7 +199,7 @@ Convert the problem of object counting to object classification and use
 \end_layout
 
 \begin_layout Enumerate
-Use CNN network directly for regression.
+Use CNN for regression and outputs counting numbers directly.
  
 \end_layout
 
@@ -222,8 +222,9 @@ literal "false"
 \end_inset
 
  to generate counting numbers directly.
- The first approach is used as a baseline.We use the sea lions dataset provided
- by NOAA Kaggle Competition to run our experiments.
+ The first approach is used as a baseline.
+ We use the sea lions dataset provided by NOAA Kaggle Competition to run
+ our experiments.
  The thesis is structured as:
 \end_layout
 

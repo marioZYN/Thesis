@@ -573,7 +573,7 @@ With learning rate equals to
 \begin_inset Formula $10^{-5}$
 \end_inset
 
-, the network is trained for 60 epochs under Adam optimization.
+, the network is trained for 50 epochs under Adam optimization.
  We use 50 training images and each of them are divided into 25 non-overlapping
  patches in order to deal with GPU's memory issue.
  One training patch example is illustrated in figure 
@@ -597,6 +597,7 @@ noprefix "false"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -605,8 +606,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/training patch.png
-	lyxscale 30
-	width 70text%
+	lyxscale 20
+	width 50text%
 
 \end_inset
 
@@ -624,6 +625,72 @@ name "fig:Training-patch-example"
 \end_inset
 
 Training patch example
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The learning process is illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-binary-2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, both the train loss and valid loss decrease as more training epochs are
+ done.
+ The count error is calculated by normalizing the summation of all the pixel
+ values in the prediction map.
+ Train count error decreases during training while validation count error
+ fluctuates quite a lot, but there is a decreasing trend.
+ The figure indicates that if we increase the training epochs, we may get
+ better results.
+ However since our goal is to do multi-object counting, not binary counting,
+ the result is sufficient to show that our Count-ception architecture could
+ handle sea lion dataset.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/sea lion binary train loss.png
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-binary-2"
+
+\end_inset
+
+Sea lion binary learning process
 \end_layout
 
 \end_inset
@@ -783,7 +850,7 @@ noprefix "false"
 
 , we can deal with GPU memory issue by either rescaling the image or separating
  the image.
- The result above is achieved by image separation, and we also tried rescaling.
+ The result above is achieved by image separation, but we also tried rescaling.
  By rescaling the image to 20% of its original size, we could feed the whole
  image into our network.
  However the performance is bad due to the fact that we lose a lot of detail
@@ -795,11 +862,11 @@ noprefix "false"
 
 \begin_layout Standard
 After modifying the receptive field size of Count-ception architecture,
- sea lion binary counting works well and the average counting error is illustrat
-ed in figure 
+ sea lion binary counting works and the average counting error is illustrated
+ in table 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Sea-lion-binary-1"
+reference "tab:Sea-lion-binary"
 plural "false"
 caps "false"
 noprefix "false"
@@ -807,18 +874,167 @@ noprefix "false"
 \end_inset
 
 .
- The numbers verify that the network can process images with complex backgrounds
- and extracts patterns to generate object counts.
+ The numbers verify that our network is able to process images with complex
+ backgrounds, and using full resolution images under larger receptive field
+ size achieves the best result.
  
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
+\begin_inset Float table
+placement H
 wide false
 sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
+
+\size tiny
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features tabularvalignment="middle" tabularwidth="100text%">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top">
+<row>
+<cell multirow="3" alignment="center" valignment="middle" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+algorithms
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+32x32 receptive field 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+48x48 receptive field with
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+48x48 receptive field
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+0.5 resolution
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+ 0.5 resolution
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+1.0 resolution
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+average count error
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+284.864
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+184.164
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+130.141
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
 
 \end_layout
 
@@ -828,11 +1044,70 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Sea-lion-binary-1"
+name "tab:Sea-lion-binary"
 
 \end_inset
 
-Sea lion binary counting performance
+Sea lion binary testing performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The testing count error is high because our algorithm tends to generate
+ false positives from rocks.
+ Some rocks have very similar shapes and colors compared to sea lions.
+ For example, the testing image shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Bad-case"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ is full of brown rocks and our Count-ception algorithms predicts 1584 sea
+ lions while the true count is 100.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/bad case.png
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Bad-case"
+
+\end_inset
+
+Bad case
 \end_layout
 
 \end_inset
@@ -871,7 +1146,7 @@ During our experiments, we encountered unbalanced sea lion distribution
  problem.
  Unlike sea lion binary counting where we only have a single heat map, here
  we have five heat maps and sea lions are distributed among them.
- Due to its unbalanced distribution, some heat maps can contain a lot positive
+ Due to unbalanced distribution, some heat maps can contain a lot positive
  pixel values (like adult_females) while others can have very few (like
  adult_males).
  The total loss is computed as a summation of each individual pixel loss
@@ -891,14 +1166,14 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-The whole network is trained for 60 epochs with 
+The whole network is trained for 175 epochs with 
 \begin_inset Formula $10^{-5}$
 \end_inset
 
  learning rate under Adam optimization.
  We separate each training image into 25 patches like what we did in sea
  lion binary counting, however not all the patches are used here.
- Even though we have weight balance layer to adjusts loss, it will not work
+ Even though we have weight balance layer to adjust loss, it will not work
  if there are no sea lions at all.
  So we need to make sure that a patch contains at least one sea lion for
  each type.
@@ -906,6 +1181,386 @@ The whole network is trained for 60 epochs with
  we can only create 195 legal patches.
  85% of these patches are used for training and the rest are for validation.
  
+\end_layout
+
+\begin_layout Standard
+The train and valid loss are shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-complete"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ , both train and valid loss decrease with more epochs, but only in the
+ first few epochs the loss decreases significantly.
+ The fluctuation behavior of validation is also seen in the counting error,
+ as illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-complete-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Despite the fact that this fluctuation indicates a non efficient learning
+ process, the error is nevertheless on the decreasing trend.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/sea lion complete loss.png
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-complete"
+
+\end_inset
+
+Sea lion complete loss
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/sea lion complete cerr.png
+	lyxscale 50
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-complete-1"
+
+\end_inset
+
+Multi-class sea lion count error
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Given an input image patch, the predicted heat maps are shown in figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-Complete"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/sea lion complete heat map.png
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-Complete"
+
+\end_inset
+
+Sea lion complete heat maps
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The testing performance is shown in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Count-ception-testing-performanc"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Our modified Count-ception network optimizes object counting by calculating
+ the loss directly from the heat maps, and each pixel value in the input
+ image is calculated redundantly to reduce variance.
+ After inserting a weight balance layer, our network is able to deal with
+ unbalanced class distribution problem.
+ Moreover, during the experiments, we discovered a bonus behavior of the
+ network which enables us to use very few positive samples to conduct training.
+ Normally, in order to train a convolutional neural network, we need to
+ feed a sufficient number of positive and negative samples which can be
+ time and space consuming.
+ However when we train a network in a fully convolutional way, positive
+ and negative training samples are generated implicitly from convolution.
+ For example, in our multi-sea lion counting problem, receptive fields in
+ the input image are naturally divided into backgrounds and sea lions depending
+ on the output pixel value.
+ Training the network in a fully convolutional way saves us from manually
+ extracting patches for constructing mini-batch and using weight balance
+ layer enables us to train the network using very sparse images.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="6">
+<features tabularvalignment="middle" tabularwidth="100text%">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+sea lion types
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+adult_males
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+subadult_females
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+adult_females
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+juveniles
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+pups
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size tiny
+average count error
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Count-ception-testing-performanc"
+
+\end_inset
+
+Count-ception testing performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

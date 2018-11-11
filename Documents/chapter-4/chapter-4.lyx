@@ -619,13 +619,9 @@ Data augmentation is a common technique used to improve the performance
  We can not simplify the deep learning architecture when we have a non trivial
  problem but we can increase the training data by data augmentation.
  Given an input image, we can rotate, flip and zoom it to enrich our dataset.
- In Steller sea lion dataset, we use data augmentation to balance the sea
- lion types and improve classification performance.
+ In Steller sea lion dataset, we use data augmentation to create more training
+ samples and improve classification performance.
  
-\end_layout
-
-\begin_layout Standard
-TO BE FINISHED.
 \end_layout
 
 \end_body
