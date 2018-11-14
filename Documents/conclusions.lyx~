@@ -103,7 +103,7 @@ n architecture to regress a spatial density map across the image.
 \begin_layout Standard
 Multi-objects counting in crowded images is an extremely tedious and time
  consuming task encountered in many real-world applications.
- And in a lo of situations we do not need to predict exact locations for
+ And in a lot of situations we do not need to predict exact locations for
  each object, thus we would like to avoid using complex models for object
  detection like faster R-CNN.
  We invent this modified version of Count-ception architecture for simultaneousl

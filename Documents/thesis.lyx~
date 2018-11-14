@@ -331,19 +331,29 @@ restoregeometry
 \end_inset
 
 
-\begin_inset Separator latexpar
-\end_inset
+\end_layout
 
-
+\begin_layout Chapter*
+Acknowledgments
 \end_layout
 
 \begin_layout Standard
-\align right
+\begin_inset ERT
+status open
 
-\emph on
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset include
 LatexCommand input
-filename "dedication.lyx"
+filename "acknowledgments.lyx"
 
 \end_inset
 

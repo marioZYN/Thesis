@@ -114,8 +114,8 @@ Since Alex re-introduced CNN architecture into computer vision field, deep
  around each object in the image.
  In order to do this, the training data needs to have both the labels and
  the bounding boxes indicating the object location.
- This kind of dataset occupies large amount of time of human labelers and
- thus it is more difficult to construct.
+ This kind of dataset occupies large amount of time from human labelers
+ and thus it is more difficult to construct.
  Segmentation algorithm requires pixel-leveled prediction for each object
  and constructing this kind of training set is tedious.
  
@@ -190,7 +190,7 @@ In order to solve this multi-objects counting problem, we start by doing
  Though in the end we didn't use object detection to solve object counting
  problem, these discussions are helpful for understanding the challenges
  as well as inspiring ideas.
- In this thesis, we solve object counting in two approaches: 
+ In this thesis, we solve object counting in two different approaches: 
 \end_layout
 
 \begin_layout Enumerate
@@ -223,6 +223,8 @@ literal "false"
 
  to generate counting numbers directly.
  The first approach is used as a baseline.
+ We show in the end that our algorithm which is optimized for object counting
+ achieves better result than using classification to generate object counts.
  We use the sea lions dataset provided by NOAA Kaggle Competition to run
  our experiments.
  The thesis is structured as:

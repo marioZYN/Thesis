@@ -567,7 +567,7 @@ Converting fully connected layers into convolution layers has several benefits.
  with an image having larger size, we will not get a single probability
  vector but a heat map.
  Thus we can exploit the heat map information for further processing.
- Third, modern deep learning frameworks like tesorflow and pytorch have
+ Third, modern deep learning frameworks like tensorflow and pytorch have
  optimization for convolution operations, so by doing computation in a fully
  convolutional manner, we can get the result faster than doing computation
  batch-wise.
@@ -841,7 +841,7 @@ After we have trained the Count-ception network, we can calculate the prediction
  We can adjust the object counts using the following formula.
  F(I) stands for the prediction map, and r is the receptive field size.
  In the example above, the receptive field of one pixel in the output is
- 32 x d32, so r equals 32.
+ 32 x 32, so r equals 32.
  Each pixel in the input image is counted 32x32 times.
  
 \begin_inset Formula 

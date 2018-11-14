@@ -196,7 +196,7 @@ Saturated neurons "kill" the gradients.
 \end_layout
 
 \begin_layout Enumerate
-Sigmoid outputs are not zero-centered.
+Sigmoid outputs are not zero-centered which hurts gradient descent process.
 \end_layout
 
 \begin_layout Enumerate
@@ -210,7 +210,7 @@ Later ReLU(Rectified Linear Unit) activation function is invented.
  function is 1 or 0.
  Theoretically ReLU activation function has larger convergence rate than
  sigmoid function.
- The problem for reLU function is that when we have a negative input value,
+ The problem for ReLU function is that when we have a negative input value,
  the gradient is zero.
  It seems to behave like our neurons which can fire or not, but in reality
  this can create dead ReLU nodes.
@@ -405,7 +405,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/classification and regression.png
-	lyxscale 40
+	lyxscale 60
 	width 60text%
 
 \end_inset
@@ -1176,7 +1176,8 @@ RPN
 \end_layout
 
 \begin_layout Standard
-Here is a speed comparison among object detection algorithms we just introduced.
+The image below is a speed comparison among object detection algorithms
+ we just introduced.
  All these algorithms exploit the idea of the two-step approach: First generate
  region proposals from original images.
  Second use classification techniques to classify each area and use regression

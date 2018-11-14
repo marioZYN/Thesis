@@ -171,7 +171,8 @@ We generate object counts by doing redundant counting and summing up all
 on and we could exploit this for better performance.
  For example, after getting the predicted sea lion heat maps, we could combine
  some primer knowledge (pups appear near their mums, etc...) to do further
- processing, like constructing a CRF to do spatial correlation.
+ processing, like constructing a CRF (Conditional Random Field) to do spatial
+ correlation.
  
 \end_layout
 

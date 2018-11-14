@@ -924,7 +924,7 @@ algorithms
 \begin_layout Plain Layout
 
 \size tiny
-48x48 receptive field with
+48x48 receptive field
 \end_layout
 
 \end_inset
@@ -1166,7 +1166,7 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-The whole network is trained for 175 epochs with 
+The whole network is trained for 50 epochs with 
 \begin_inset Formula $10^{-5}$
 \end_inset
 
@@ -1187,29 +1187,33 @@ The whole network is trained for 175 epochs with
 The train and valid loss are shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Sea-lion-complete"
+reference "fig:Train-&-valid"
 plural "false"
 caps "false"
 noprefix "false"
 
 \end_inset
 
- , both train and valid loss decrease with more epochs, but only in the
- first few epochs the loss decreases significantly.
- The fluctuation behavior of validation is also seen in the counting error,
- as illustrated in figure 
+, both of them decrease with more epochs, but the decreasing trend is not
+ so significant, indicating the inherent difficulty of learning multi sea
+ lion objects at the same time.
+ The fluctuating behavior of validation is mostly due to the fact that we
+ do not have so much validation data.
+ In figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Sea-lion-complete-1"
+reference "fig:Train-count-error"
 plural "false"
 caps "false"
 noprefix "false"
 
 \end_inset
 
-.
- Despite the fact that this fluctuation indicates a non efficient learning
- process, the error is nevertheless on the decreasing trend.
+, training count error for each individual sea lion type is shown.
+ Note that for pups, the training error is low at the beginning because
+ the initial weights happen to make its count error low.
+ From this figure, we can notice that there is an error decreasing trend,
+ even though it's a slow process.
  
 \end_layout
 
@@ -1222,9 +1226,80 @@ status open
 
 \begin_layout Plain Layout
 \align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename images/sea lion complete loss.png
-	width 80text%
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Train-&-valid"
+
+\end_inset
+
+Train & valid loss
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/sea lion individual cerr.png
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Train-count-error"
+
+\end_inset
+
+Train count error
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -1255,6 +1330,37 @@ Sea lion complete loss
 \end_layout
 
 \begin_layout Standard
+In order to understand the learning process for each sea lion type, train
+ and valid count error is illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-complete-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ For some sea lion type like adult females, the train and valid error is
+ decreasing more significantly than others which means that it is easier
+ to distinguish adult females.
+ For juveniles and pups, the error is not decreasing so much, indicating
+ the difficulty for recognizing them.
+ This phenomenon matches the average test error we got in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Count-ception-testing-performanc"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, where pups have a relative high counting error.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -1266,7 +1372,7 @@ status open
 \begin_inset Graphics
 	filename images/sea lion complete cerr.png
 	lyxscale 50
-	width 80text%
+	width 90text%
 
 \end_inset
 
@@ -1291,10 +1397,6 @@ Multi-class sea lion count error
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -1313,6 +1415,13 @@ noprefix "false"
 \end_inset
 
 .
+ The most challenging issue for our algorithm is false positive prediction.
+ As we can see in the heat maps, the algorithm works well for recognizing
+ the existence of sea lions, but it works not so well for correctly classifying
+ the sea lion type.
+ Due to the similarity of each sea lion, our algorithm tends to generate
+ a higher counting number than the real one.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1320,7 +1429,7 @@ noprefix "false"
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1368,6 +1477,9 @@ noprefix "false"
 \end_inset
 
 .
+ Even though the previous heat maps indicate a non satisfying classification
+ result, our algorithm which is trained under less data and fewer epochs,
+ performs better than the baseline approach.
  Our modified Count-ception network optimizes object counting by calculating
  the loss directly from the heat maps, and each pixel value in the input
  image is calculated redundantly to reduce variance.
@@ -1492,6 +1604,8 @@ average count error
 
 \begin_layout Plain Layout
 
+\size tiny
+49.4
 \end_layout
 
 \end_inset
@@ -1501,6 +1615,8 @@ average count error
 
 \begin_layout Plain Layout
 
+\size tiny
+7.6
 \end_layout
 
 \end_inset
@@ -1510,6 +1626,8 @@ average count error
 
 \begin_layout Plain Layout
 
+\size tiny
+56.8
 \end_layout
 
 \end_inset
@@ -1519,6 +1637,8 @@ average count error
 
 \begin_layout Plain Layout
 
+\size tiny
+109.3
 \end_layout
 
 \end_inset
@@ -1528,6 +1648,8 @@ average count error
 
 \begin_layout Plain Layout
 
+\size tiny
+228.4
 \end_layout
 
 \end_inset
