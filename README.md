@@ -1,10 +1,29 @@
 # Thesis
+
 Thesis Work for master in Politecnico di Milano
 
+Tesina name: Object Classiﬁcation and Counting with Count-ception Networks
+Relatore: Prof. Giacomo Boracchi
+Correlatore: Diego Carrera
+Autore: Zhou Yinan
+Anno: 2017-2018
 
-# Literature Review
+## Code
 
-* Fully Convolutional Networks for Semantic Segmentation
-* Object Detection: R-CNN, SPP-net, Fast R-CNN, Faster R-CNN
+Baseline approach and our Count-ception algorithm are provided. The code file structure is the following:
+/Code
+    /data
+        /cnn
+            /adult_males
+            /subadult_males
+            /adult_females
+            /juveniles
+            /pups
+            /backgrounds
+        /inception
+            /original
+            /patches
+
+
 
 
