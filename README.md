@@ -11,18 +11,18 @@ Anno: 2017-2018
 ## Code
 
 Baseline approach and our Count-ception algorithm are provided. The code file structure is the following:
-/Code
-    /data
-        /cnn
-            /adult_males
-            /subadult_males
-            /adult_females
-            /juveniles
-            /pups
-            /backgrounds
-        /inception
-            /original
-            /patches
+/Code  
+    /data  
+        /cnn  
+            /adult_males  
+            /subadult_males  
+            /adult_females  
+            /juveniles  
+            /pups  
+            /backgrounds  
+        /inception  
+            /original  
+            /patches  
 
 
 
