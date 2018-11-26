@@ -2,11 +2,11 @@
 
 Thesis Work for master in Politecnico di Milano
 
-Tesina name: Object Classiﬁcation and Counting with Count-ception Networks
-Relatore: Prof. Giacomo Boracchi
-Correlatore: Diego Carrera
-Autore: Zhou Yinan
-Anno: 2017-2018
+Tesina name: Object Classiﬁcation and Counting with Count-ception Networks  
+Relatore: Prof. Giacomo Boracchi  
+Correlatore: Diego Carrera  
+Autore: Zhou Yinan  
+Anno: 2017-2018  
 
 ## Code
 
