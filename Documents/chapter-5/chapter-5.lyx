@@ -80,12 +80,12 @@
 \begin_body
 
 \begin_layout Standard
-In this chapter, we talk about the performance of our algorithm.
+In this chapter, we present performance of our algorithm.
  First of all, a baseline approach is provided, using sliding window and
  CNN.
  Then we will use Count-ception architecture to do binary counting which
  does not require any classification.
- Finally we discuss our modified version of Count-ception network, able
+ Finally, we discuss our modified version of Count-ception network, able
  to do classification and counting at the same time.
 \end_layout
 
@@ -130,10 +130,9 @@ noprefix "false"
 \end_inset
 
  and we use these coordinates as patch centers.
- Each patch is of size 96 x 96 and we discard the illegal patches which
- are not big enough due to its location near the image boarder.
- Including background patch, we have totally 6 types of patches, and a sample
- of them is shown in figure 
+ Each patch is of size 96 x 96.
+ Including background patch, we have totally 6 classes of patches, and a
+ sample of them is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Patch-types"
@@ -159,7 +158,7 @@ status open
 \begin_inset Graphics
 	filename images/sea lion patches.png
 	lyxscale 50
-	width 70text%
+	width 90text%
 
 \end_inset
 
@@ -260,7 +259,7 @@ CNN architecture
 
 \begin_layout Standard
 The last layer in this CNN is a fully connected layer and we append a softmax
- function after it to convert the outputs into classification scores.
+ layer after it to convert the outputs into classification scores.
  The sea lion class with the highest score will be our prediction.
 \end_layout
 
@@ -277,7 +276,7 @@ This network is trained for 100 epochs under
  Since it is a classification network, we use cross entropy loss with Adam
  optimization and in order to have a better sense of the network performance,
  we add accuracy as an evaluation metric.
- The training and validation performance is shown in figure 
+ The training and validation performance is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Baseline-training-performance"
@@ -345,7 +344,17 @@ We have a six-class classification problem with uniform data distribution
  As mentioned before, we can get sea lion count prediction by first separating
  the whole image and then sum up classification results.
  The test dataset we construct has totally 184 images and the testing performanc
-e is summarized in the following table:
+e is summarized in the Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Baseline-testing-performance"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -513,6 +522,12 @@ average count error
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Baseline-testing-performance"
+
+\end_inset
+
 Baseline testing performance
 \end_layout
 
@@ -527,8 +542,8 @@ Baseline testing performance
 \end_layout
 
 \begin_layout Standard
-We have very high counting error for juveniles and pups and there are mainly
- two reasons for this:
+We have very high counting error for juveniles and pups and there are two
+ major reasons for this:
 \end_layout
 
 \begin_layout Enumerate
@@ -539,9 +554,9 @@ Juveniles and pups are inherently difficult to detect because they have
 \end_layout
 
 \begin_layout Enumerate
-By using non-overlapping patches with classification approach, we assume
- that the sea lions lie at the center of each patch, and there are maximumly
- one sea lion in each patch.
+By using non-overlapping patches with classification, we assume that the
+ sea lions lie at the center of each patch, and there are maximumly one
+ sea lion in each patch.
  However in the test images, sea lions not always lie in the patch centers,
  and pups for most of the time lie very near to other sea lions (possibly
  their mothers), so the above assumption does not hold.
@@ -575,8 +590,8 @@ With learning rate equals to
 
 , the network is trained for 50 epochs under Adam optimization.
  We use 50 training images and each of them are divided into 25 non-overlapping
- patches in order to deal with GPU's memory issue.
- One training patch example is illustrated in figure 
+ tiles in order to deal with GPU's memory issue.
+ One training tile example is illustrated in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Training-patch-example"
@@ -587,11 +602,11 @@ noprefix "false"
 \end_inset
 
 .
- Thus there are totally 1250 patches, among them 85% of them are used in
- training and the rest are used as validation dataset.
- In the testing phase, each image is first separated into 25 patches and
- then sea lion count predictions of each patch are summed up to generate
- the final result.
+ Thus there are totally 1250 tiles, among them 85% of them are used in training
+ and the rest are used as validation dataset.
+ In the testing phase, each image is first separated into 25 tiles and then
+ sea lion count predictions of each tile are summed up to generate the final
+ result.
  
 \end_layout
 
@@ -624,7 +639,7 @@ name "fig:Training-patch-example"
 
 \end_inset
 
-Training patch example
+Training tile example
 \end_layout
 
 \end_inset
@@ -638,7 +653,7 @@ Training patch example
 \end_layout
 
 \begin_layout Standard
-The learning process is illustrated in figure 
+The learning process is illustrated in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Sea-lion-binary-2"
@@ -650,8 +665,9 @@ noprefix "false"
 
 , both the train loss and valid loss decrease as more training epochs are
  done.
- The count error is calculated by normalizing the summation of all the pixel
- values in the prediction map.
+ We perform redundant counting from highly overlapping receptive fields
+ and in order to get the final counting prediction, we normalize the summation
+ of all the pixel values in the prediction map.
  Train count error decreases during training while validation count error
  fluctuates quite a lot, but there is a decreasing trend.
  The figure indicates that if we increase the training epochs, we may get
@@ -708,8 +724,8 @@ Sea lion binary learning process
 \end_layout
 
 \begin_layout Standard
-The result of sea lion binary counting is not bad, and as we can see in
- figure 
+The results of sea lion binary counting are not bad, and as we can see in
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Sea-lion-binary"
@@ -837,7 +853,7 @@ Sea lion binary counting performance
 In our experiments with sea lion binary classification, we discovered that
  enlarging the receptive field size of Count-ception architecture is necessary
  for recognizing sea lions.
- We need to carefully design its size to cover the largest object.
+ We need to carefully set its size to cover the largest object.
  As mentioned in chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -853,17 +869,16 @@ noprefix "false"
  The result above is achieved by image separation, but we also tried rescaling.
  By rescaling the image to 20% of its original size, we could feed the whole
  image into our network.
- However the performance is bad due to the fact that we lose a lot of detail
+ However the performance is poor due to the fact that we lose a lot of detail
  information.
- In the end, we decide to use image separation approach to deal with memory
- issue.
+ In the end, we decide to use image separation to deal with memory issue.
  
 \end_layout
 
 \begin_layout Standard
 After modifying the receptive field size of Count-ception architecture,
  sea lion binary counting works and the average counting error is illustrated
- in table 
+ in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Sea-lion-binary"
@@ -1065,7 +1080,7 @@ Sea lion binary testing performance
 The testing count error is high because our algorithm tends to generate
  false positives from rocks.
  Some rocks have very similar shapes and colors compared to sea lions.
- For example, the testing image shown in figure 
+ For example, the testing image shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Bad-case"
@@ -1131,7 +1146,7 @@ Multi-class Counting with modified Count-ception
 \begin_layout Standard
 We generate multi-class heat maps by increasing the number of filters in
  the last convolution layer.
- Compared with sea lion binary counting, we are now doing five class counting
+ Compared with sea lion binary counting, we are now facing five class counting
  which requires more parameters.
  This multi-class Count-ception architecture is a regression network which
  outputs five pixel values from a single receptive field.
@@ -1151,8 +1166,8 @@ During our experiments, we encountered unbalanced sea lion distribution
  adult_males).
  The total loss is computed as a summation of each individual pixel loss
  and this could lead to "always zero prediction".
- In order to deal with this problem, we invent a weight balance layer which
- is discussed in chapter 
+ In order to deal with this problem, we create a weight balance layer which
+ was discussed in chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "chap:fourth-chapter"
@@ -1171,20 +1186,20 @@ The whole network is trained for 50 epochs with
 \end_inset
 
  learning rate under Adam optimization.
- We separate each training image into 25 patches like what we did in sea
- lion binary counting, however not all the patches are used here.
+ We separate each training image into 25 tiles like what we did in sea lion
+ binary counting, however not all the tiles are used here.
  Even though we have weight balance layer to adjust loss, it will not work
  if there are no sea lions at all.
- So we need to make sure that a patch contains at least one sea lion for
+ So we need to make sure that a tile contains at least one sea lion for
  each type.
  This is actually a very strict requirement and from 500 training images,
- we can only create 195 legal patches.
- 85% of these patches are used for training and the rest are for validation.
+ we can only create 195 legal tiles.
+ 85% of these tiles are used for training and the rest are for validation.
  
 \end_layout
 
 \begin_layout Standard
-The train and valid loss are shown in figure 
+The train and valid loss are shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Train-&-valid"
@@ -1194,12 +1209,12 @@ noprefix "false"
 
 \end_inset
 
-, both of them decrease with more epochs, but the decreasing trend is not
- so significant, indicating the inherent difficulty of learning multi sea
- lion objects at the same time.
+, both of them decrease with epochs, but the decreasing trend is not so
+ significant, indicating the inherent difficulty of learning multi sea lion
+ objects at the same time.
  The fluctuating behavior of validation is mostly due to the fact that we
  do not have so much validation data.
- In figure 
+ In Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Train-count-error"
@@ -1210,7 +1225,7 @@ noprefix "false"
 \end_inset
 
 , training count error for each individual sea lion type is shown.
- Note that for pups, the training error is low at the beginning because
+ Note that for pups, the training count error is low at the beginning because
  the initial weights happen to make its count error low.
  From this figure, we can notice that there is an error decreasing trend,
  even though it's a slow process.
@@ -1331,7 +1346,7 @@ Sea lion complete loss
 
 \begin_layout Standard
 In order to understand the learning process for each sea lion type, train
- and valid count error is illustrated together in figure 
+ and valid count error is illustrated together in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Sea-lion-complete-1"
@@ -1361,7 +1376,7 @@ status open
 \begin_inset Graphics
 	filename images/sea lion complete cerr.png
 	lyxscale 50
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -1392,7 +1407,7 @@ Multi-class sea lion count error
 \end_layout
 
 \begin_layout Standard
-Given an input image patch, the predicted heat maps are shown in figure
+Given an input image patch, the predicted heat maps are shown in Figure
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1409,8 +1424,30 @@ noprefix "false"
  the existence of sea lions, but it works not so well for correctly classifying
  the sea lion type.
  Due to the similarity of each sea lion, our algorithm tends to generate
- a higher counting number than the real one.
- 
+ a higher counting number than the real value.
+ There are two major issues for our modified Count-ception network to be
+ applied on sea lions dataset:
+\end_layout
+
+\begin_layout Enumerate
+False positives from other types of sea lions and background noises like
+ rocks.
+\end_layout
+
+\begin_layout Enumerate
+It can happen that we produce correct sea lion counting number, but the
+ sea lion activation area in the heat map is not correct.
+ For example, the subadult males prediction in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-Complete"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1424,7 +1461,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/sea lion complete heat map.png
-	width 60text%
+	lyxscale 50
+	width 90text%
 
 \end_inset
 
@@ -1441,7 +1479,7 @@ name "fig:Sea-lion-Complete"
 
 \end_inset
 
-Sea lion complete heat maps
+Sea lion heat maps with five classes
 \end_layout
 
 \end_inset
@@ -1455,7 +1493,7 @@ Sea lion complete heat maps
 \end_layout
 
 \begin_layout Standard
-The testing performance is shown in table 
+The testing performance is shown in Fable 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Count-ception-testing-performanc"
@@ -1473,7 +1511,7 @@ noprefix "false"
  the loss directly from the heat maps, and each pixel value in the input
  image is calculated redundantly to reduce variance.
  After inserting a weight balance layer, our network is able to deal with
- unbalanced class distribution problem.
+ unbalanced class distribution.
  Moreover, during the experiments, we discovered a bonus behavior of the
  network which enables us to use very few positive samples to conduct training.
  Normally, in order to train a convolutional neural network, we need to

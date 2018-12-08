@@ -80,39 +80,39 @@
 \begin_body
 
 \begin_layout Standard
-This paper concerns automated object classification and counting in high
+This thesis concerns automated object classification and counting in high
  resolution images.
  The approach we take is to use a fully convolutional network based Count-ceptio
 n architecture to regress a spatial density map across the image.
  Training our model end-to-end in a fully convolutional manner is beneficial
- to the images which have object clumping or overlapping.
+ to the images which have objects overlapping or very close to each other.
  High resolution images make GPU training difficult because it will occupy
  a lot of memory, and we tackle this problem by dividing the whole image
  into several patches.
  The original Count-ception architecture only deals with single object counting,
  and we append more filters in the final convolution layer in order to integrate
  classification functionality.
- During our experiments we find that unbalanced object distribution hurts
+ During our experiments we find that unbalanced object distribution harms
  the performance and moreover low density target maps will force our algorithm
  to output zero.
- We solve this problem by inventing a weight balance layer which assigns
+ We solve this problem by inserting a weight balance layer which assigns
  weight coefficients in the loss function.
- 
+ Positive pixel values will be assigned a weight factor larger than te
 \end_layout
 
 \begin_layout Standard
 Multi-objects counting in crowded images is an extremely tedious and time
  consuming task encountered in many real-world applications.
- And in many situations we do not need to predict exact locations for each
- object, thus we would like to avoid using complex models for object detection
- like faster R-CNN.
+ And in a lot of situations we do not need to predict exact locations for
+ each object, thus we would like to avoid using complex models for object
+ detection like faster R-CNN.
  We invent this modified version of Count-ception architecture for simultaneousl
 y object classification and counting, and testify it on the sea lion dataset
  provided by NOAA.
  Since the sea lion dataset is inherently difficult with complex backgrounds
  and very similar objects, we can foresee that our algorithm can be applied
- for many other problems, including biology, remote sensing, surveillance,
- and etc.
+ for many other problems as well, including biology, remote sensing, surveillanc
+e, and etc.
  
 \end_layout
 
@@ -121,17 +121,59 @@ Further improvements
 \end_layout
 
 \begin_layout Standard
-1.
- High resolution images
+In this thesis, there are some challenges we could not fully solve.
+ Also there are some ideas we do not have time to testify and we view them
+ as possible further improvements.
+ 
+\end_layout
+
+\begin_layout Subsection*
+High resolution images
 \end_layout
 
 \begin_layout Standard
 As mentioned in the previous chapter, in order to deal with GPU's memory
  consumption we can resort to image separation or image scaling.
  However both methods have disadvantages and can hurt performance.
- We processing the whole image in a fully convolutional way in order to
- deal with images having object clumping and overlapping, but by first doing
- image separation 
+ We process the whole image in a fully convolutional way in order to deal
+ with images having object clumping and overlapping, but by doing image
+ separation we may cutoff object clusters or object itself at the very beginning.
+ For achieving better object counting performance, it's better to use GPU
+ with high memory.
+ 
+\end_layout
+
+\begin_layout Subsection*
+More complex Count-ception architecture
+\end_layout
+
+\begin_layout Standard
+In the thesis, we basically keep the complexity of the original Count-ception
+ architecture.
+ Instead of making it deeper, we keep the depth and only change the receptive
+ filed size.
+ The reason to do it is to make the number of parameters as small as possible
+ in the concern of both convergence speed and memory usage.
+ Actually it is natural to design a more complex network structure when
+ we are facing a difficult dataset, so it is worth a try in the future.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Spatial correlation in heat maps
+\end_layout
+
+\begin_layout Standard
+We generate object counts by doing redundant counting and summing up all
+ the pixel values in the predicted map.
+ We would say this is a very preliminary usage of heat maps.
+ Fully convolutional networks generate heat maps which contain spatial informati
+on and we could exploit this for better performance.
+ For example, after getting the predicted sea lion heat maps, we could combine
+ some primer knowledge (pups appear near their mums, etc...) to do further
+ processing, like constructing a CRF (Conditional Random Field) to do spatial
+ correlation.
+ 
 \end_layout
 
 \end_body

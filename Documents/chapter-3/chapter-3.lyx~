@@ -93,7 +93,7 @@ Architecture Overview
 \begin_layout Standard
 Before we introduce our network, let's first briefly review the original
  Count-ception architecture.
- As illustrated in figure 
+ As illustrated in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Count-ception-Architecture"
@@ -104,24 +104,17 @@ noprefix "false"
 \end_inset
 
 , each 32 x 32 area in the original image produces one output value.
- The whole architecture is a fully convolutional network, and each basic
+ The entire architecture is a fully convolutional network, and each basic
  element is an Inception module stacking two sizes of filters.
- By doing convolution, Count-ception architecture can generate a prediction
- map which is used together with the target map to calculate the loss.
+ By convolution, Count-ception architecture generates a prediction map which
+ is computed with the target map to calculate the loss.
  The original Count-ception architecture is used to count objects in the
- image, but it can not do classification, so only one kind of objects can
- exist in each input image.
- Also the dataset used in Count-ception paper is easier to analyze compared
+ image, but it can not do classification, because there is only one convolution
+ filter in the last convolution layer, thus only a single heat map is generated.
+ Moreover the dataset used in Count-ception paper is easier to analyze compared
  to our sea lion dataset.
- They used medical cell images which have very simple background environment
- (black) and each image is not large, with 256 x 256 x 3 pixels occupying
- only about 100KB.
- Our sea lion dataset, however, has far more complex background, including
- sea, grass, and rocks, thus containing more noise.
- Also the image has quite high resolution, around 3000 x 4000 x 3 each,
- occupying around 5MB.
  A comparison between their cell image and our sea lion image is shown in
- figure 
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Dataset-comparison"
@@ -132,6 +125,11 @@ noprefix "false"
 \end_inset
 
 .
+ They used medical imaging pictures which have very simple background environmen
+t (black) and each image is relatively small, with 256 x 256 x 3 pixels.
+ Our sea lion dataset, however, has far more complex background, including
+ sea, grass, and rocks and the image has quite high resolution, around 3000
+ x 4000 x 3 each, occupying around 5MB.
 \end_layout
 
 \begin_layout Standard
@@ -139,7 +137,7 @@ noprefix "false"
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -202,10 +200,6 @@ Sea lion image
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -229,17 +223,14 @@ Dataset comparison
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-The modified version of Count-ception architecture is shown in figure 
+We modified the Count-ception architecture to meet our demands, and the
+ architecture is show in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Modified-Count-ception-architect"
@@ -249,12 +240,13 @@ noprefix "false"
 
 \end_inset
 
-, and the main changes are the following:
+.
+ The main changes are the following:
 \end_layout
 
 \begin_layout Itemize
-Input patch receptive filed is changed from 32 x 32 to 48 x 48 by increasing
- the first convolution filter size to 19 x 19 x 64.
+The receptive filed is changed from 32 x 32 to 48 x 48 by increasing the
+ first convolution filter size to 19 x 19 x 64.
 \end_layout
 
 \begin_layout Itemize
@@ -265,8 +257,13 @@ The output is changed from 1 x 1 x 1 to 1 x 1 x 5 by increasing the number
 \begin_layout Standard
 These modifications are made in order to make the network work for our sea
  lion dataset and integrate classification functionality.
- The reason behind it and some design decisions are discussed in the next
- section.
+ Increasing the receptive field is necessary because our objects in the
+ image are larger than medical imaging cells used in the original Count-ception
+ architecture.
+ We need to set the receptive field so that it could cover the largest possible
+ object.
+ Since we have totally 5 types of sea lions to count, the number of convolution
+ filters in the last layer is increased accordingly.
 \end_layout
 
 \begin_layout Standard
@@ -316,7 +313,7 @@ Modified Count-ception architecture
 \end_layout
 
 \begin_layout Section
-Design Decisions
+Design Choices
 \end_layout
 
 \begin_layout Standard
@@ -337,9 +334,9 @@ Recall that the original Count-ception architecture is used to generate
  1 x 1 x 1 tensor as the output value.
  But now we can have multiple types of objects in each image, and we would
  like to generate a counting number for each type of them.
- One straightforward way to do it is to add more channels in the last convolutio
-n layer, so that we can generate more outputs.
- As we can see in figure 
+ A straightforward way to do it is to add more channels in the last convolution
+ layer, so that we can generate more outputs.
+ As we can see in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Modified-Count-ception-architect"
@@ -349,20 +346,20 @@ noprefix "false"
 
 \end_inset
 
-, we have five convolution filters in the last layer while in the original
- Count-ception network we only have one.
+, we have five convolution filters in the last layer while the original
+ Count-ception network has only one.
  It is obvious that by increasing the number of filters, we can get more
  output values.
  The question is: Does it make sense?
 \end_layout
 
 \begin_layout Standard
-To answer this question, let's examine the network architecture in more
+To answer this question, let's examine the network architecture more in
  detail.
  Recall that Count-ception architecture is fully convolutional, meaning
  that there are no fully connected layers in this network.
  The fully connected layers are all converted into convolution layers, as
- the last two green blocks in figure 
+ the last two green blocks in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Modified-Count-ception-architect"
@@ -491,8 +488,8 @@ Receptive field and activation area
 \end_layout
 
 \begin_layout Standard
-The receptive field is defined as the region in the input space that a particula
-r CNN's feature is looking at.
+The receptive field in a convolutional neural network refers to the part
+ of the image that is visible to one filter at a time.
  More specifically it defines the local area of the input which generates
  a single pixel value in the output.
  The receptive filed in the original Count-ception architecture is 32 x
@@ -508,13 +505,13 @@ literal "false"
 \end_inset
 
 .
- So should we design the network to make the receptive filed large enough
- to cover each object? Not really.
- Actually we need to design the network to make the "activation area" able
- to cover a single object, not necessarily the receptive field.
+ So should we design the network to make the receptive field large enough
+ to cover each object? In fact we do not need to.
+ We only need to design the network to make the "activation area" able to
+ cover a single object, not necessarily the receptive field.
  We define the activation area as the local region in the dot label image
  which produces a positive value in the output.
- In paper 
+ In 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/CohenLB17"
@@ -531,12 +528,23 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-Recall that the dot label images are all black except the dots indicating
- object centers, and by using convolution we can generate a target map which
- is our learning objective.
+Recall that in chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:second-chapter"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ we explained how the target construction network works.
+ The dot label images are all black except the dots indicating object centers,
+ and by using convolution we can generate a target map which is our learning
+ objective.
  Since we are doing convolution with square filters and stride one, the
  positive values in the target map are in the form of squares too and each
- square has the same size as the receptive field, as illustrated in figure
+ square has the same size as the receptive field, as illustrated in Figure
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -609,7 +617,7 @@ If we analyze the convolution operation step by step, we will see that each
 \begin_inset Formula $F$
 \end_inset
 
- is calculated by
+ is calculated by 
 \begin_inset Formula $A=2\times F-1$
 \end_inset
 
@@ -629,10 +637,17 @@ status open
 
 \begin_layout Plain Layout
 \align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename images/filter.png
-	lyxscale 30
-	width 40text%
+	filename images/activation area.png
+	lyxscale 40
+	width 50text%
 
 \end_inset
 
@@ -643,13 +658,67 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+Relation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/filter.png
+	lyxscale 30
+	width 20text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Detail
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:Activation-area-1"
 
 \end_inset
 
-Activation area
+Activation area and receptive field
 \end_layout
 
 \end_inset
@@ -663,8 +732,8 @@ Activation area
 \end_layout
 
 \begin_layout Standard
-As long as the activation area is larger than the object size, we are OK
- to proceed with the training process.
+As long as the activation area is larger than the object size, we can proceed
+ with the training process.
  Of course, we can also design the network to make the receptive field larger
  than the object size, however it will require more parameters to learn.
  The largest type of sea lion is the adult male which is around 96 x 96,
@@ -677,8 +746,7 @@ Weight balance layer
 
 \begin_layout Standard
 Count-ception network is convolved with the input image to generate a prediction
- map, and this prediction map together with the target map are used to calculate
- the L1 loss.
+ map, which is computed with the target map to calculate the L1 loss.
  Note that here we are calculating L1 loss with a matrix, and if we expand
  this formula into pixel values, we will see that the overall loss is the
  summation of each individual pixel loss.
@@ -713,7 +781,7 @@ By expanding the loss function, we see that doing stochastic training with
  normal CNN.
  So training Count-ception network directly with output maps has the same
  performance compared to do training with manually extracted patches and
- corresponding target values, as illustrated in figure 
+ corresponding target values, as illustrated in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Batch-wise-training"
@@ -738,7 +806,7 @@ status open
 \begin_inset Graphics
 	filename images/batch-wise.png
 	lyxscale 30
-	width 80text%
+	width 90text%
 
 \end_inset
 
@@ -774,7 +842,7 @@ Batch-wise training
 
 \begin_layout Standard
 So what will happen if our target map has a low density (having very few
- positive areas), like the target map in figure 
+ positive areas), like the target map in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Batch-wise-training"
@@ -784,9 +852,9 @@ noprefix "false"
 
 \end_inset
 
-? If we view the training phase batch-wise, we'll see that there are a lot
- more negative patches (contain no object) than positive patches in our
- mini-batch.
+? If we examine the training phase in batch-wise, we'll see that there are
+ a lot more negative patches (contain no object) than positive patches in
+ our mini-batch.
  If we train our network with this unbalanced distributed training samples,
  our network will learn to always produce zero in order to minimize the
  loss.
@@ -795,8 +863,7 @@ noprefix "false"
 
 \begin_layout Standard
 Actually having unbalanced dataset is a common issue in machine learning
- and deep learning area, and there are basically three ways to deal with
- it:
+ and deep learning, and there are basically three ways to deal with it:
 \end_layout
 
 \begin_layout Enumerate
@@ -813,7 +880,7 @@ Modify the loss function to give more weights to the minor class.
 
 \begin_layout Standard
 Here we adopt the third approach, because we have multiple objects in each
- image and thus it is not an easy task to modify the image and balance objects.
+ image, thus it is not an easy task to resample the image and balance objects.
  In order to balance the loss function, we insert a weight balance layer
  
 \begin_inset Formula $L$
@@ -835,10 +902,10 @@ loss=||P\times L-T\times L||_{1}
 
 \begin_layout Standard
 The weight balance layer has the same dimension as the prediction map, and
- it is doing element-wise product with both the prediction map and the target
+ it contains all ones except the positive output area in the target map
+ which will have pixel value w (w>1).
+ It is doing element-wise product with both the prediction map and the target
  map.
- The weight balance layer contains all ones except the positive output area
- in the target map which will have pixel value w (w>1).
  
 \end_layout
 
@@ -883,7 +950,10 @@ Weight balance layer
 \end_layout
 
 \begin_layout Standard
-W can be chosen manually by ourselves or we can use the following formula
+\begin_inset Formula $W$
+\end_inset
+
+ can be chosen manually by ourselves or we can use the following formula
  to make positive and negative patches equal weighted.
 \end_layout
 
@@ -899,7 +969,7 @@ w=\frac{width_{T}\times height_{T}-sum(T)}{sum(T)}
 \end_layout
 
 \begin_layout Standard
-We invent the weight balance layer in order to deal with low density target
+We design the weight balance layer in order to deal with low density target
  map issue, and the experiment results show that it is necessary if we want
  to produce positive counting numbers.
 \end_layout

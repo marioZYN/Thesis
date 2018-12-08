@@ -82,32 +82,27 @@
 \begin_layout Standard
 Steller sea lions in the western Aleutian Islands have declined 94 percent
  in the last 30 years.
- The endangered western population, found in the North Pacific, are focus
- of conservation efforts which require annual population counts.
- Specifically trained scientists at NOAA Fisheries Alaska Fisheries Science
- Center conduct these surveys using airplanes and unoccupied aircraft systems
- to collect aerial images.
- Having accurate population estimates enables scientists to better understand
- factors that may be contributing to lack of recovery of Stellers in this
- area.
+ The endangered population are focus of conservation efforts which require
+ annual population counts.
  Currently, it takes biologists up to four months to count sea lions from
  the thousand of images NOAA Fisheries collects each year.
- Once individual counts are conducted, the tallies must be reconciled to
- confirm their reliability.
- The results of these counts are time-sensitive.
- Automating the annual population count will free up critical resources,
- and allow experts to focus on the core research issue.
- Plus, advancements in computer vision applied to aerial population counts
- may also greatly benefit other endangered species.
+ The results of these counts are time-sensitive and automating the annual
+ population count will free up critical resources, and allow experts to
+ focus on core research.
+ 
 \end_layout
 
 \begin_layout Standard
-Multi-objects detection and counting is a common demand in many situations
- like endangered animals protection and medical cells density calculation\SpecialChar endofsentence
-
- The purpose of this thesis is to design an algorithm for simultaneously
- object classification and counting which could automate preliminary information
- gathering for various researches.
+Computer vision with deep learning methods is a hot topic in both research
+ and industry.
+ Various algorithms are invented and improved for image classification and
+ object detection.
+ However there are not so many algorithms optimized for object counting
+ which is a common demand in many situations, like endangered animal protection
+ and biological imaging analysis.
+ The purpose of this thesis is to design an algorithm optimized for simultaneous
+ly object classification and counting which could automate preliminary informati
+on gathering for various researches.
  
 \end_layout
 

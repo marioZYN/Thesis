@@ -87,19 +87,19 @@ Steller Sea Lion Dataset
 The goal of Steller Sea Lion Count competition is to estimate the number
  of each type of sea lions in a given image.
  The different types of sea lions are: adult males, subadult males, adult
- females, and pups.
+ females, juveniles and pups.
  There are totally 947 training images and 18639 testing images.
- For each training image, we have two versions: the original one and the
+ For each training image, we have two versions: the original image and the
  one with colored dots in the center of each sea lion.
  Different images may have different sizes but all the sizes are around
- 4500 x 3000 x 3, thus the image is quite large occupying around 5MB space.
- The large amount of high resolution images brings us two major problems.
+ 4500 x 3000 x 3, thus the image is quite large occupying around 5MB.
+ The large amount of high resolution images introduce two major problems.
  First, during training we need to deal with memory consumption and we may
  need to split the image into patches or resize the image in order to fit
  them into GPU's memory.
  Second, in the testing phase, we need to have short inference time due
  to the huge amount testing images.
- In figure 
+ In Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Training-image-pair"
@@ -231,12 +231,22 @@ green: pups
 \end_layout
 
 \begin_layout Standard
-As we can see in the figure, there are some black regions in the labeled
- images.
+As we can see in the Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Training-image-pair"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, there are some black regions in the labeled images.
  The black regions are added by the data provider in order to filter out
- controversial sea lions.
- Another thing to notice is that the number of sea lions varies a lot in
- different images.
+ controversial sea lions (even the experts find it difficult to distinguish
+ the sea lion type).
+ Another thing to notice is that the number of sea lions per image varies
+ a lot.
  We can have an image containing more than 900 sea lions or an image containing
  only 3.
  Also it is not a uniform distribution for different sea lion types.
@@ -250,7 +260,7 @@ noprefix "false"
 
 \end_inset
 
-is a summary of sea lion type distribution in the whole training dataset:
+ is a summary of sea lion type distribution in the whole training dataset.
 \end_layout
 
 \begin_layout Standard
@@ -294,19 +304,27 @@ Sea lion types distribution
 
 \end_layout
 
+\begin_layout Standard
+In our experiments, we construct our own testing set from the 947 training
+ images.
+ More specifically, all the images with id 750 – 947 are used as test set
+ which are never been seen in the training phase.
+ These testing images are used as the indicator of algorithm performance.
+\end_layout
+
 \begin_layout Section
 Data Preprocessing
 \end_layout
 
 \begin_layout Standard
-In order to construct the training dataset, we need to do some data preprocessin
-g.
+In order to construct the training dataset, do some data preprocessing is
+ needed.
  First of all, we use blob detection to get the color of each centered dot
  and its coordinates.
  Then we can use these coordinates to construct dot labeled inputs which
  are required in Count-ception architecture.
  In order to deal with GPU memory consumption, we exploit two methods: image
- resizing and separation.
+ scaling and separation.
  Data augmentation is used to balance sea lion types and improve classification
  performance.
  
@@ -317,13 +335,12 @@ Blob Detection
 \end_layout
 
 \begin_layout Standard
-In computer vision, blob detection methods are aimed at detecting regions
- in a digital image that differ in properties, such as brightness or color,
- compared to surrounding regions.
- Informally, a blob is a region of an image in which some properties are
- constant or approximately constant; all the points in a blob can be considered
- in some sense to be similar to each other.
- The most common method for blob detection is convolution.
+In computer vision, blob detection methods aim at detecting regions in a
+ digital image that differ in properties, such as brightness or color, compared
+ to surrounding regions.
+ Roughly speaking, a blob is a region of an image in which some properties
+ are constant or approximately constant; all the points in a blob can be
+ considered in some sense to be similar to each other.
  
 \end_layout
 
@@ -336,11 +353,13 @@ A dot in labeled images is a blob which contains the similar pixel values
  Luckily we don't need to implement blob detection algorithm from scratch,
  there are many open source implementations for this algorithm and in this
  thesis we use the version provided by OpenCV.
- Here are the decision rules we used to classify dot color using RGB values:
+ Here are the decision rules we used as a look up table in order to classify
+ dot color using RGB values:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float algorithm
+placement H
 wide false
 sideways false
 status open
@@ -438,11 +457,13 @@ In order to calculate the loss for Count-ception architecture, we need to
  This dot image has the same dimension as the original image and has 255
  pixel value at each sea lion position while all the other pixel values
  are zero.
+ Padding is used to deal with sea lions near the image boarder.
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -543,13 +564,57 @@ The original sea lion image has quite high resolution and it can consume
  When we train our neural network with GPU, we not only need to load the
  image, but also need to store the parameters and all the intermediate values
  which are used to calculate gradients in back propagation.
- In order to deal with this issue, we mainly exploit image resizing and
- separation.
+ In order to deal with this memory issue, we mainly exploit image scaling
+ and separation.
  
 \end_layout
 
 \begin_layout Standard
+In computer graphics and digital imaging, image scaling refers to the resizing
+ of a digital image.
+ When scaling a vector graphic image, the graphic primitives that make up
+ the image can be scaled using geometric transformations, without loss of
+ image quality.
+ When scaling a raster graphics image, a new image with a higher or lower
+ number of pixels must be generated.
+ In case of decreasing the pixel number this usually results in a visible
+ loss.
+ There are quite some image rescaling algorithms, like Nearest-neighbor
+ interpolation, bilinear and bicubic algorithm, and etc.
+ The details of these algorithms are not our concern, and we are more interested
+ in the downsampling effect.
+ The sea lion images are raster graphics and we half the its size to reduce
+ memory consumption.
+ As a result we lose some pixel information and everything becomes smaller.
+ There are mainly two effects:
+\end_layout
 
+\begin_layout Itemize
+By losing some pixel values, the information left may not be sufficient
+ to distinguish each sea lion type.
+\end_layout
+
+\begin_layout Itemize
+When we downsample the image, everything becomes smaller and thus we need
+ re-design the receptive field size in order to better fit each sea lion.
+ 
+\end_layout
+
+\begin_layout Standard
+Another method to deal with memory consumption is to separate each image
+ into patches and then process each patch to sum up the counts as the final
+ result.
+ By using this method, we do not lose pixel values and each object does
+ not shrink.
+ However, when we generate patches using a non-overlapping sliding window,
+ we may cut off some objects and this can hurt performance.
+ 
+\end_layout
+
+\begin_layout Standard
+In a word, both image scaling and separation have disadvantages and in fact
+ using these two methods is just a compromise due to the limited memory
+ of GPU.
 \end_layout
 
 \begin_layout Subsection
@@ -559,13 +624,22 @@ Data Augmentation
 \begin_layout Standard
 Data augmentation is a common technique used to improve the performance
  of neural networks.
- Overfitting is a challenge for deep learning models due to insufficient
+ It is a common knowledge that the more data an ML algorithm has access
+ to, the more effective it can be
+\end_layout
+
+\begin_layout Standard
+Overfitting is a challenge for deep learning models due to insufficient
  amount of data and complex network structures.
  We can not simplify the deep learning architecture when we have a non trivial
  problem but we can increase the training data by data augmentation.
  Given an input image, we can rotate, flip and zoom it to enrich our dataset.
- In Steller sea lion dataset, we use data augmentation to balance the sea
- lion types and improve classification performance.
+ 
+\end_layout
+
+\begin_layout Standard
+In Steller sea lion dataset, we use data augmentation to create more training
+ samples and improve classification performance.
  
 \end_layout
 

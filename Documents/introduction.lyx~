@@ -96,7 +96,7 @@ Steller sea lions in the western Aleutian Islands have declined 94 percent
  confirm their reliability.
  The results of these counts are time-sensitive.
  Automating the annual population count will free up critical resources,
- and allow experts to focus on the core research issue.
+ and allow experts to focus on core research.
  Plus, advancements in computer vision applied to aerial population counts
  may also greatly benefit other endangered species.
 \end_layout
@@ -104,33 +104,34 @@ Steller sea lions in the western Aleutian Islands have declined 94 percent
 \begin_layout Standard
 Since Alex re-introduced CNN architecture into computer vision field, deep
  learning methods become the state-of-art for image classification, localization
-, and segmentation, etc...
+, segmentation, as well as many other vision recognization tasks.
  Image classification is the task of giving an input image, outputting a
  corresponding label.
- The algorithm is usually trained with massive labeled dataset and the outputs
- are constrained to the labels we have in the training samples.
+ The algorithm is usually trained with very large labeled dataset and the
+ outputs are constrained to the labels we have in the training samples.
  Image localization and segmentation are more difficult than classification.
- Localization algorithm outputs a bounding box and a corresponding label
- around each object in the image.
+ Localization algorithm outputs a bounding box around each object and a
+ corresponding label.
  In order to do this, the training data needs to have both the labels and
  the bounding boxes indicating the object location.
  This kind of dataset occupies large amount of time from human labelers
  and thus it is more difficult to construct.
  Segmentation algorithm requires pixel-leveled prediction for each object
- and constructing this kind of training set is tedious.
+ and this kind of training is even more time consuming.
  
 \end_layout
 
 \begin_layout Standard
 The purpose for this thesis is to develop an algorithm for simultaneous
- classification and counting, and we don't need to produce exact location
- for each object.
+ classification and counting.
  Given an input image, we output the label and the corresponding count for
  each object.
  There are various kinds of situations where we could apply this algorithm
  to, for example, the counting problem for endangered animals like the sea
  lions described above.
- Also for medical pictures, we could use this algorithm to produce precise
+ By using our algorithm, generating sea lion counting numbers in each image
+ can be fully automated.
+ Also in biological imaging, we could use this algorithm to produce precise
  counts for cells and tissues, helping doctors to analyze the disease.
  Moreover, the training dataset is a lot easier to construct: we only need
  to have a labeled dot for each object, no bounding boxes are required.
@@ -142,9 +143,20 @@ The purpose for this thesis is to develop an algorithm for simultaneous
 The main challenge for this thesis is the inherent difficulty of our sea
  lion images which have small and similar objects but complex background
  environment.
- Each image has quite high resolution which makes it difficult for managing
- algorithm speed and memory consumption.
- 
+ Moreover, each image has quite high resolution which makes it difficult
+ for managing algorithm speed and memory consumption.
+ As we can see in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sea-lion-image"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, dense sea lion distribution on the rocks makes it difficult to classify
+ sea lion type and generate precise counts.
 \end_layout
 
 \begin_layout Standard
@@ -169,6 +181,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sea-lion-image"
+
+\end_inset
+
 Sea lion image
 \end_layout
 
@@ -183,28 +201,22 @@ Sea lion image
 \end_layout
 
 \begin_layout Standard
-In order to solve this multi-objects counting problem, we start by doing
- some literature review about current state-of-art object detection algorithms.
- More specifically, a history of the evolvement of faster R-CNN architectures
- is discussed.
- Though in the end we didn't use object detection to solve object counting
- problem, these discussions are helpful for understanding the challenges
- as well as inspiring ideas.
- In this thesis, we solve object counting in two different approaches: 
+In this thesis, we developed two major solutions for multi-object counting
+ problem:
 \end_layout
 
 \begin_layout Enumerate
-Convert the problem of object counting to object classification and use
- CNN to solve it.
+Reformulate the problem of object counting as object classification and
+ use CNN to solve it.
 \end_layout
 
 \begin_layout Enumerate
-Use CNN for regression and outputs counting numbers directly.
+Build a regression network optimized for object counting.
  
 \end_layout
 
 \begin_layout Standard
-Our algorithm focuses on the second approach which uses Count-ception architectu
+Our algorithm focuses on the second solution which uses Count-ception architectu
 re
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -222,20 +234,25 @@ literal "false"
 \end_inset
 
  to generate counting numbers directly.
- The first approach is used as a baseline.
+ The first solution is used as a baseline.
+ We show that our algorithm which is optimized for object counting achieves
+ superior performance than using classification to generate object counts.
  We use the sea lions dataset provided by NOAA Kaggle Competition to run
  our experiments.
- The thesis is structured as:
+ 
+\end_layout
+
+\begin_layout Standard
+The thesis is structured as:
 \end_layout
 
 \begin_layout Itemize
-In Chapter 1, we briefly talk about deep learning algorithms in computer
- vision field, including image classification, detection and localization
- algorithms.
+In Chapter 1, we review deep learning algorithms in computer vision field,
+ including image classification, object detection and localization algorithms.
 \end_layout
 
 \begin_layout Itemize
-In Chapter 2, we introduce Count-ception architecture and explain why it
+In Chapter 2, we introduce Count-ception architecture and explain why this
  can solve object counting problems.
 \end_layout
 
@@ -255,6 +272,20 @@ In Chapter 5, algorithm performance is analyzed.
 
 \begin_layout Itemize
 Finally, conclusions and further improvements are provided.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The code developed for this thesis can be found in https://github.com/marioZYN/Th
+esis
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

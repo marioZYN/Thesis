@@ -82,7 +82,7 @@
 \begin_layout Standard
 In this chapter, we talk about Count-ception architecture which is based
  on Inception modules and fully convolutional network.
- Inception network is invented by Google and discussed in 
+ Inception network is proposed by Google team
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/CohenLB17"
@@ -119,8 +119,8 @@ literal "false"
 .
  This includes both increasing the depth - the number of levels - of the
  network and its width: the number of units at each level.
- This is as an easy and safe way of training higher quality models, only
- when we have a large amount of labeled training data.
+ This is an easy and safe way of training higher quality models, only when
+ we have a large amount of labeled training data.
  Also bigger size typically means a large number of parameters, which makes
  the enlarged network more prone to overfitting.
  The Inception network is carefully designed in terms of speed and accuracy
@@ -143,7 +143,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename images/element.png
-	lyxscale 50
+	lyxscale 20
 	width 80text%
 
 \end_inset
@@ -174,8 +174,8 @@ GoogleLeNet
 
 \begin_layout Standard
 The main difference between Inception module and normal CNN convolution
- layer is that Inception uses various sizes of filters in each convolution
- layer while CNN uses only one.
+ layer is that Inception module uses various sizes of filters in each convolutio
+n layer while CNN uses only one.
  Convolution filter sizes define how much local information we would like
  to collect.
  When we increase its size, we tend to collect more spatial information
@@ -184,7 +184,7 @@ The main difference between Inception module and normal CNN convolution
  features in each layer, thus increasing the width of the network.
  The outputs of each filter are stacked together to form the input of the
  next stage.
- As we can see in figure 
+ As we can see in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Inception-module"
@@ -198,13 +198,13 @@ noprefix "false"
  Choosing these specific filter sizes is not mandatory and we could use
  other sizes we like.
  Note that in order to stack output tensors, we need to have outputs with
- same dimension from each filter and we can achieve it by using padding.
+ same dimension from each filter and we can achieve this by using padding.
  The 1x1 filter is used for dimension reduction by decreasing output channels.
  
 \end_layout
 
 \begin_layout Standard
-In figure 
+In Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Inception-module,-naive"
@@ -223,7 +223,7 @@ noprefix "false"
  This problem becomes even more pronounced when we chain more Inception
  modules.
  The second implementation structure solves channel exploding problem, as
- we can see in figure 
+ we can see in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Inception-module-with"
@@ -258,7 +258,7 @@ status open
 \begin_inset Graphics
 	filename images/inception_model_native.png
 	lyxscale 30
-	width 45text%
+	width 50text%
 
 \end_inset
 
@@ -296,7 +296,7 @@ status open
 \begin_inset Graphics
 	filename images/inception_model_real.png
 	lyxscale 30
-	width 45text%
+	width 50text%
 
 \end_inset
 
@@ -420,9 +420,9 @@ Fully Convolutional Network
 FCN is short for fully convolutional neural net which is a convolutional
  network without fully connected layers.
  The whole network is built by convolution and pooling layers only.
- Normal CNN architectures can be seen as a pipeline structure: first using
- several convolution and pooling layers to extract features from images,
- then using fully connected layers to exploit these features for classification.
+ CNN architectures can be seen as a pipeline structure: first using several
+ convolution and pooling layers to extract features from images, then using
+ fully connected layers to exploit these features for classification.
  This structure has one disadvantage, once we set up the architecture we
  can not change the input image size anymore, otherwise we can not forward
  the tensor into fully connected layers.
@@ -437,15 +437,29 @@ FCN is short for fully convolutional neural net which is a convolutional
 \begin_layout Standard
 In fact, passing tensors through fully connected layers can be seen as a
  convolution operation.
- We can convert any fully connected layers into convolution, with one-to-one
+ We can convert any fully connected layer into convolution, with one-to-one
  map on the weights.
+ The number of neurons in the next fully connected layer is equal to the
+ number of filters in the converted convolution layer and each convolution
+ filter size is equal to the input tensor size.
  Let's see an example, suppose we have a CNN doing three class classification
  with a 128-neuron fully connected layer and we get a tensor with size 2
- x 2 x 256 after several convolution and pooling operations.
+ x 2 x 256 after several convolution and pooling operations, as shown in
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Normal-CNN-architecture"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  If we want to pass this tensor through fully connected layers, we need
  to first stretch it into a long vector of size 1024.
- If we ignore the bias, the weight matrices in fully connected layers are
- 1024 x 128 and 128 x 3.
+ Ignoring the bias, the weight matrices in fully connected layers are of
+ size 1024 x 128 and 128 x 3.
  We can convert fully connected layers into convolution layers using the
  following steps:
 \end_layout
@@ -473,6 +487,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Normal-CNN-architecture"
+
+\end_inset
+
 Normal CNN architecture
 \end_layout
 
@@ -510,6 +530,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fully-Convolutional-Network"
+
+\end_inset
+
 Fully Convolutional Network
 \end_layout
 
@@ -524,24 +550,35 @@ Fully Convolutional Network
 \end_layout
 
 \begin_layout Enumerate
-Do not stretch the 2 x 2 x 256 tensor, instead keep the dimension.
+Do not stretch the 2 x 2 x 256 tensor, instead keep the tensor unchanged.
 \end_layout
 
 \begin_layout Enumerate
-Build 128 filters, each filter is a tensor of 2 x 2 x 256.
+Build 128 filters, each filter is a tensor of 2 x 2 x 256 which is equal
+ to the input tensor.
  Passing 1024 length vector through fully connected layers can be seen as
  doing convolution with no padding and stride one.
 \end_layout
 
 \begin_layout Enumerate
-Build 3 filters, each filter is 1 x 1 x 128.
+Build 3 filters, each filter is 1 x 1 x 128 to replace the last layer in
+ the fully connected architecture.
  
 \end_layout
 
 \begin_layout Standard
-If we do the math, there is a one-to-one map between weights in fully connected
- layers and weights in convolution filters, as we can see in the figure
- above.
+There is a one-to-one map between weights in fully connected layers and
+ weights in convolution filters, as described in the Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fully-Convolutional-Network"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  In general, converting any fully connected layers into convolution operations
  has the following rules:
 \end_layout
@@ -562,11 +599,17 @@ Converting fully connected layers into convolution layers has several benefits.
  size.
  As long as the input image size is no smaller than the filter, we can directly
  forward it through the network.
+ This means we can train the network in a fully convolutional way without
+ resizing the input image.
  Second, we do not get a single vector at the output, instead we get a tensor.
- This means if we are doing image classification and we feed the network
- with an image having larger size, we will not get a single probability
- vector but a heat map.
- Thus we can exploit the heat map information for further processing.
+ This means if we take a trained CNN and convert its fully connected layers
+ into convolution, when we feed the network with an image having larger
+ size than the image size we used in training, we will not get a single
+ probability vector but a heat map at the output.
+ Each pixel value in the heat map is a probability value coming from a receptive
+ field with size equal to the training image size.
+ Thus we can exploit the heat map information for further processing, for
+ example doing spatial correlation using the object location information.
  Third, modern deep learning frameworks like tensorflow and pytorch have
  optimization for convolution operations, so by doing computation in a fully
  convolutional manner, we can get the result faster than doing computation
@@ -583,9 +626,8 @@ Although SPP-net discards the non-convolutional portion of classification
 \end_layout
 
 \begin_layout Standard
-If we analyze the performance of FCN, we will see that doing stochastic
- training under FCN is equivalent to doing batch-wise training under normal
- CNN 
+If we analyze the performance of FCN, we will see that stochastic training
+ under FCN is equivalent to batch-wise training under normal CNN 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/pami/ShelhamerLD17"
@@ -594,7 +636,7 @@ literal "false"
 \end_inset
 
 .
- A real-valued loss function composed with an FCN defines a task.
+ A real-valued loss function composed with a FCN defines a task.
  If the loss function is a sum over the spatial dimensions of the final
  layer, 
 \begin_inset Formula $\ell(x;\theta)=\sum_{ij}\ell^{'}(x_{ij};\theta)$
@@ -623,7 +665,7 @@ Count-ception Architecture
 \end_layout
 
 \begin_layout Standard
-Count-ception network is introduced in paper 
+Count-ception network is introduced in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/CohenLB17"
@@ -636,9 +678,9 @@ literal "false"
  objects in the image.
  The whole network is a fully convolutional neural net and no pooling layer
  is used.
- The author didn't use pooling layers in order to not lose pixel information
- and make calculating receptive field easier.
- The network is shown in figure 
+ There is no pooling layers in the architecture in order to not lose pixel
+ information and make calculating receptive field easier.
+ The network is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Count-ception-Architecture"
@@ -649,11 +691,11 @@ noprefix "false"
 \end_inset
 
 , which is used for regression, each 32 x 32 region produces a 1 x 1 x 1
- tensor indicating the number of objects contained in this region.
+ tensor indicating the number of objects contained in that region.
  After each convolution, batch normalization and leaky ReLU activation are
  used in order to speed up convergence.
- The 3 x 3 convolutions are padded so they do not reduce the size and there
- are only two points in the network where the size is reduced.
+ The 3 x 3 convolutions are padded so they do not reduce the tensor size
+ and there are only two points in the network where the size is reduced.
 \end_layout
 
 \begin_layout Standard
@@ -699,7 +741,7 @@ Count-ception Architecture
 \end_layout
 
 \begin_layout Standard
-Instead of taking the entire image as input and produces a single prediction
+Instead of taking the entire image as input and producing a single prediction
  for the number of objects, Count-ception is a smaller network that is run
  over the image to produce an intermediate count map
 \begin_inset CommandInset citation
@@ -712,21 +754,84 @@ literal "false"
 .
  This smaller network is trained to count the number of objects in its receptive
  field.
- Moreover, the input image I is processed in a fully convolutional way to
- produce a matrix F(I) that represents the counts of objects for a specific
- receptive field r x r of a sub-network that performs the counting.
+ Moreover, the input image 
+\begin_inset Formula $I$
+\end_inset
+
+ is processed in a fully convolutional way to produce a matrix 
+\begin_inset Formula $F(I)$
+\end_inset
+
+ that represents the counts of objects for a specific receptive field r
+ x r of a sub-network that performs the counting.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/target map construction.png
+	lyxscale 40
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Target-map-construction"
+
+\end_inset
+
+Target map construction
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 A prediction map is generated using an input image and Count-ception architectur
 e, and we need to define a loss function in order to use gradient descent
- to update filter weights, making our network learn to count.
+ to update filter weights.
  The target we are learning is generated from the dot labeled image and
- by using convolution, we create a target map from this dot input.
- This convolution filter size is the same as the receptive field in Count-ceptio
-n architecture.
- In figure 
+ by using convolution we create a target map from this dotted image as illustrat
+ed in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Target-map-construction"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The convolution filter size is the same as the receptive field in Count-ception
+ architecture.
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Count-ception-pipeline"
@@ -736,7 +841,7 @@ noprefix "false"
 
 \end_inset
 
-, the training pipeline is illustrated.
+ illustrates the training pipeline.
  Pixel-wised L1 loss is calculated between prediction map and target map.
 \end_layout
 
@@ -755,7 +860,7 @@ min||F(I)-T||_{1}
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -838,16 +943,38 @@ After we have trained the Count-ception network, we can calculate the prediction
  in order to average over possible errors.
  With a stride of 1, each target is counted once for each pixel in its receptive
  field.
- We can adjust the object counts using the formula below.
- F(I) stands for the prediction map, and r is the receptive field size.
+ We can adjust the object counts using Formula 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:count_norm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\begin_inset Formula $F(I)$
+\end_inset
+
+ stands for the prediction map, and 
+\begin_inset Formula $r$
+\end_inset
+
+ is the receptive field size.
  In the example above, the receptive field of one pixel in the output is
- 32 x 32, so r equals 32.
- Each pixel in the input image is counted 32x32 times.
+ 32 x 32, so 
+\begin_inset Formula $r$
+\end_inset
+
+ equals 32.
+ Each pixel in the input image is counted 32 x 32 times.
  
 \begin_inset Formula 
-\[
-counts=\frac{\sum_{x,y}F(I)}{r^{2}}
-\]
+\begin{equation}
+counts=\frac{\sum_{x,y}F(I)}{r^{2}}\label{eq:count_norm}
+\end{equation}
 
 \end_inset
 
@@ -855,8 +982,8 @@ counts=\frac{\sum_{x,y}F(I)}{r^{2}}
 \end_layout
 
 \begin_layout Standard
-With the above approach, we sacrifice the ability to localize each cell
- exactly with x, y coordinates, however for many applications accurate counting
+Using Count-ception network, we sacrifice the ability to localize each cell
+ exactly with x, y coordinates; however in many applications, accurate counting
  is more important that exact localization.
  Another issue with this approach is that a correct overall count may not
  come from correctly identifying cells and could be the network adapting
@@ -869,8 +996,8 @@ literal "false"
 \end_inset
 
 .
- One common example is if the training data contains many images without
- cells, the network may predict 0 in order to minimize the loss.
+ One common example is when the training data contains many images without
+ objects, the network may predict 0 in order to minimize the loss.
  A solution to this is to first train on a more balanced dataset and then
  take the well performing networks fine-tuning it on more sparse datasets.
  In our modified version of Count-ception network, we invent a weight balanced
